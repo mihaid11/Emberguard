@@ -68,7 +68,7 @@ void InventoryMenu::update(const Inventory& inventory)
 void InventoryMenu::updateSlotColors() {
     for (int i = 0; i < mSlots.size(); ++i) {
         if (i == mHoveredSlot) {
-            mSlots[i].setFillColor(sf::Color(120, 120, 120, 210)); // Hover color
+            mSlots[i].setFillColor(sf::Color(120, 120, 120, 210));
         } else {
             mSlots[i].setFillColor(sf::Color(0, 0, 0, 220));
         }

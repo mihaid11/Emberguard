@@ -15,7 +15,7 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const std
 
     mButtonText.setFont(mFont);
     mButtonText.setString(text);
-    mButtonText.setCharacterSize(18);
+    mButtonText.setCharacterSize(15);
     mButtonText.setFillColor(sf::Color::White);
 
     // Center the text within the button

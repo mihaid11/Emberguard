@@ -30,7 +30,7 @@ public:
 	void render();
 
 	bool isGameOver() const;
-	void init(int level);
+	void init(int level, int crytals);
 	bool isLevelCompleted(int level) const;
 
 private:

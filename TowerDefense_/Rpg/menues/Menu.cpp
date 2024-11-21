@@ -45,13 +45,13 @@ exitButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "Exit")
 	mButtons.push_back(skillTreeButton);
 	mButtons.push_back(exitButton);
 
-	if (!mFont.loadFromFile("gameFont.ttf"))
+	if (!mFont.loadFromFile("../assests/fonts/gameFont.ttf"))
 		std::cout << "Couldn't load font" << std::endl;
 
 	mCrystalText.setFont(mFont);
 	mCrystalText.setCharacterSize(14);
 	mCrystalText.setFillColor(sf::Color::White);
-	mCrystalText.setPosition(mMenuShape.getPosition().x + mMenuShape.getSize().x - mCrystalText.getGlobalBounds().width - 150.0f,
+	mCrystalText.setPosition(mMenuShape.getPosition().x + mMenuShape.getSize().x - mCrystalText.getGlobalBounds().width - 230.0f,
 		mMenuShape.getPosition().y + 15.0f);
 }
 

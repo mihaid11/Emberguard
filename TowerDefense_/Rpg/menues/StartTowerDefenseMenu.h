@@ -17,6 +17,7 @@ public:
 	void render(sf::RenderWindow& window);
 	bool handleMouseClick(const sf::Vector2f& mousePos);
 	void updateHover(const sf::Vector2f& mousePos);
+	void update(int crystals);
 
 private:
 	sf::RectangleShape mMenuShape;

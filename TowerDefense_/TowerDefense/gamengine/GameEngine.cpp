@@ -26,9 +26,9 @@ GameEngine::GameEngine(sf::RenderWindow& window, GameManager* gameManager)
     mGameOver(false),
     mLevelCompleted(false),
     mIsPaused(false),
-    mSmallMenu(mWindow, this, mCurrentLevel),
-    mLevelCompleteMenu(mWindow, this, mCurrentLevel),
-    mGameOverMenu(mWindow, this, mCurrentLevel) {
+    mSmallMenu(mWindow, this, mCurrentLevel, mCrystals),
+    mLevelCompleteMenu(mWindow, this, gameManager, mCurrentLevel, mCrystals),
+    mGameOverMenu(mWindow, this, gameManager, mCurrentLevel, mCrystals) {
 
     if (!mFont.loadFromFile("../assests/fonts/gameFont.ttf"))
         std::cout << "Couldn't load font" << std::endl;
@@ -308,6 +308,7 @@ void GameEngine::handleKeyPress(sf::Keyboard::Key keyCode) {
             mSmallMenu.show();
         }
     }
+    mLevelCompleteMenu.updateCrystals(mCrystals);
 }
 
 void GameEngine::update()
@@ -462,48 +463,47 @@ void GameEngine::render()
 {
     mWindow.clear();
 
-    if (!mLevelCompleted) {
+    mMap.render(mWindow);
 
-        mMap.render(mWindow);
+    mPlayer.render(mWindow);
+    for (const auto& tower : mTowers)
+        tower->render(mWindow);
+    for (auto& projectile : mProjectiles)
+        projectile.render(mWindow);
+    for (auto& enemy : mEnemies)
+        enemy.render(mWindow);
 
-        mPlayer.render(mWindow);
-        for (const auto& tower : mTowers)
-            tower->render(mWindow);
-        for (auto& projectile : mProjectiles)
-            projectile.render(mWindow);
-        for (auto& enemy : mEnemies)
-            enemy.render(mWindow);
+    mWindow.draw(mHealthBarBackground);
+    mWindow.draw(mHealthBar);
+    mWindow.draw(mCrystalText);
 
-        mWindow.draw(mHealthBarBackground);
-        mWindow.draw(mHealthBar);
-        mWindow.draw(mCrystalText);
-
-        if (mTowerSelectionMenu.isVisible()) {
-            sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
-            mTowerSelectionMenu.updateHover(mousePos);
-            mTowerSelectionMenu.render(mWindow);
-        }
-
-        if (mTowerMenu.isVisible() && mSelectedTower)
-            mTowerMenu.render(mWindow);
-
-        mPlayerMenu.render(mWindow, mPlayer);
-
-        if (!gameStarted) {
-            mWindow.draw(startGameButton);
-            mWindow.draw(startGameButtonText);
-        }
-
-        if (mIsPaused)
-            mSmallMenu.render(mWindow);
-
-        if (mGameOver) {
-            mGameOverMenu.render(mWindow);
-        }
+    if (mTowerSelectionMenu.isVisible()) {
+        sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
+        mTowerSelectionMenu.updateHover(mousePos);
+        mTowerSelectionMenu.render(mWindow);
     }
-    else {
+
+    if (mTowerMenu.isVisible() && mSelectedTower)
+        mTowerMenu.render(mWindow);
+
+    mPlayerMenu.render(mWindow, mPlayer);
+
+    if (!gameStarted) {
+        mWindow.draw(startGameButton);
+        mWindow.draw(startGameButtonText);
+    }
+
+    if (mIsPaused)
+        mSmallMenu.render(mWindow);
+
+    if (mGameOver) {
+        mGameOverMenu.render(mWindow);
+    }
+
+    if (mLevelCompleted) {
         mLevelCompleteMenu.render(mWindow);
     }
+
 
     mWindow.display();
 }
@@ -523,13 +523,13 @@ bool GameEngine::isGameOver() const
     return mGameOver;
 }
 
-void GameEngine::init(int level)
+void GameEngine::init(int level, int crystals)
 {
     mPlayer.setHealth(100);
     mCurrentLevel = level;
 
     // Reset all variables and states to their initial values for the specified level
-    mCrystals = 100;
+    mCrystals = crystals;
     mTowers.clear();
     mEnemies.clear();
     mProjectiles.clear();

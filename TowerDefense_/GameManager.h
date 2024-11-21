@@ -1,7 +1,6 @@
 #pragma once
 #include "Rpg/gamengine/RPGEngine.h"
 #include "TowerDefense/gamengine/GameEngine.h"
-//#include "QuestManager.h"
 #include "Rpg/dialogueSystem/DIalogueManager.h"
 
 enum class GameState {
@@ -20,7 +19,6 @@ public:
     void switchToRPG(int crystals);
     bool isLevelCompleted(int level) const;
 
-    //QuestManager& getQuestManager();
     GameEngine& getGame();
     RPGEngine& getGameEngine();
 
@@ -33,7 +31,6 @@ private:
     RPGEngine mRpgEngine;
     GameEngine mTowerDefenseEngine;
 
-    //QuestManager mQuestManager;
     DialogueManager mDialogueManager;
 };
 

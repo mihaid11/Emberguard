@@ -2,9 +2,9 @@
 #include "../gamengine/GameEngine.h"
 #include <iostream>
 
-SmallMenu::SmallMenu(sf::RenderWindow& window, GameEngine* game, int level) : mIsVisible(false), mGame(game),
+SmallMenu::SmallMenu(sf::RenderWindow& window, GameEngine* game, int level, int crystals) : mIsVisible(false), mGame(game),
 quitButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Quit"),
-restartButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Restart"), mLevel(level) 
+restartButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Restart"), mLevel(level), mCrystals(crystals)
 {
     mMenuBackground.setSize(sf::Vector2f(270, 140));
     mMenuBackground.setFillColor(sf::Color(50, 50, 50, 220));
@@ -22,7 +22,7 @@ restartButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Restart"), mLevel(leve
 
     restartButton.setCallback([this]() {
         if (mGame) {
-            mGame->init(mLevel);
+            mGame->init(mLevel, mCrystals);
         }
         else {
             std::cerr << "Error: Game is nullptr in restartButton callback." << std::endl;

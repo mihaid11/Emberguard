@@ -1,11 +1,12 @@
 #include "LevelCompleteMenu.h"
 #include "../gamengine/GameEngine.h"
+#include "../../GameManager.h"
 #include <iostream>
 
-LevelCompleteMenu::LevelCompleteMenu(sf::RenderWindow& window, GameEngine* game, int level)
-	: mGame(game), mLevel(level),
-	quitButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Quit"),
-	playAgainButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Play Again")
+LevelCompleteMenu::LevelCompleteMenu(sf::RenderWindow& window, GameEngine* game,
+	GameManager* gameManager, int level, int crystals)
+	: mGame(game), mGameManager(gameManager), mLevel(level), mCrystals(crystals),
+	continueButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Play Again")
 
 {
 	mMenuShape.setSize(sf::Vector2f(270,140));
@@ -15,24 +16,18 @@ LevelCompleteMenu::LevelCompleteMenu(sf::RenderWindow& window, GameEngine* game,
 		(window.getSize().y - mMenuShape.getSize().y) / 2
 	);
 
-	quitButton.setPosition(sf::Vector2f(mMenuShape.getPosition().x + 45, mMenuShape.getPosition().y + 77));
-	playAgainButton.setPosition(sf::Vector2f(mMenuShape.getPosition().x + 45, mMenuShape.getPosition().y + 25));
+	continueButton.setPosition(sf::Vector2f(mMenuShape.getPosition().x + 45, mMenuShape.getPosition().y + 44));
 
-	quitButton.setCallback([&]() {
-		window.close();
-		});
-
-	playAgainButton.setCallback([this]() {
-		if (mGame) {
-			mGame->init(1);
+	continueButton.setCallback([&]() {
+		if (mGameManager) {
+			mGameManager->switchToRPG(mCrystals);
 		}
 		else {
 			std::cerr << "Error: GameManager is nullptr in returnButton callback." << std::endl;
 		}
 		});
 
-	mButtons.push_back(playAgainButton);
-	mButtons.push_back(quitButton);
+	mButtons.push_back(continueButton);
 }
 
 void LevelCompleteMenu::render(sf::RenderWindow& window)
@@ -42,19 +37,6 @@ void LevelCompleteMenu::render(sf::RenderWindow& window)
 	for (auto& button : mButtons) {
 		button.render(window);
 	}
-
-	sf::Text completeText;
-	sf::Font font;
-	if (!font.loadFromFile("gameFont.ttf")) {
-		std::cerr << "Couldn't load font from file" << std::endl;
-	}
-	completeText.setFont(font);
-	completeText.setCharacterSize(50);
-	completeText.setString("Thank you for playing the game!");
-	completeText.setFillColor(sf::Color::White);
-	completeText.setPosition(sf::Vector2f((window.getSize().x - completeText.getGlobalBounds().width) / 2.0f,
-		200.0f));
-	window.draw(completeText);
 }
 
 void LevelCompleteMenu::handleMouseClick(const sf::Vector2f& mousePos)
@@ -71,4 +53,9 @@ void LevelCompleteMenu::updateHover(const sf::Vector2f& mousePos)
 	for (auto& button : mButtons) {
 		button.updateHover(mousePos);
 	}
+}
+
+void LevelCompleteMenu::updateCrystals(int crystals)
+{
+	mCrystals = crystals;
 }

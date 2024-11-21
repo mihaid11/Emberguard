@@ -13,9 +13,6 @@
 #include "../npcs/GarrickStone.h"
 #include "../npcs/VincentHale.h"
 #include "../npcs/SeraphinaLumeris.h"
-//#include "QuestMenu.h"
-//#include "QuestManager.h"
-//#include "ShopMenu.h"
 
 class GameManager;
 
@@ -33,8 +30,6 @@ public:
 	void saveGame();
 	void loadGame();
 	void resetSaveGame();
-
-	//void initializeQuests();
 
 private:
 	sf::RenderWindow& mWindow;
@@ -65,8 +60,6 @@ private:
 
 	SaveSystem mSaveSystem;
 	NPCManager mNPCManager;
-	//QuestMenu mQuestMenu;
-	//QuestManager mQuestManager;
 	//DialogueManager mDialogueManager;
 	SkillTree mSkillTree;
 	Inventory mInventory;

@@ -53,18 +53,13 @@ void GameManager::switchToRPG(int crystals) {
 
 void GameManager::switchToTowerDefense(int crystals, int level, const std::vector<std::string>& availableTowers) {
     mCurrentState = GameState::TowerDefense;
-    mTowerDefenseEngine.init(level);
+    mTowerDefenseEngine.init(level, crystals);
 }
 
 bool GameManager::isLevelCompleted(int level) const
 {
     return mTowerDefenseEngine.isLevelCompleted(level);
 }
-
-/*QuestManager& GameManager::getQuestManager()
-{
-    return mQuestManager;
-}*/
 
 GameEngine& GameManager::getGame()
 {

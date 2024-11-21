@@ -8,7 +8,7 @@ class GameEngine;
 class SmallMenu
 {
 public:
-	SmallMenu(sf::RenderWindow& window, GameEngine* game, int level);
+	SmallMenu(sf::RenderWindow& window, GameEngine* game, int level, int crystals);
 
 	void render(sf::RenderWindow& window);
 	void handleMouseClick(const sf::Vector2f& mousePos);
@@ -27,7 +27,7 @@ private:
 
 	GameEngine* mGame;
 	int mLevel;
-
+	int mCrystals;
 	bool mIsVisible;
 };
 

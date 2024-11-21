@@ -51,7 +51,6 @@ RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 	mVincentHale(sf::Vector2f(600.0f, 400.0f)),
 	mSeraphinaLumeris(sf::Vector2f(-20.0f, 980.0f)),
 	mNPCManager(),
-	//mQuestMenu(sf::Vector2f(1080.0f, 360.0f)),
 	mCurrentInteractingNPC(nullptr),
 	mSkillTree(),
 	mMenu(window, mSkillTree, mInventory),
@@ -65,7 +64,7 @@ RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 	//,mShopMenu(window, mCrystals) 
 	{
 
-	if (!mFont.loadFromFile("gameFont.ttf"))
+	if (!mFont.loadFromFile("../assests/fonts/gameFont.ttf"))
 		std::cout << "Couldn't load font from file" << std::endl;
 
 	mDialogueText.setFont(mFont);
@@ -203,9 +202,6 @@ void RPGEngine::processEvents() {
 		else if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
-				/*if (mQuestMenu.isMenuClicked(static_cast<sf::Vector2f>(mousePos))) {
-					mQuestMenu.toggle();
-				}*/
 				if (mShowMenu) {
 					mMenu.handleMouseClick(mousePos);
 				}
@@ -237,8 +233,7 @@ void RPGEngine::update()
 					sf::Vector2f direction = previousPosition - npcPos;
 					float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-					if (distance < 10.0f) {  // Adjust this threshold for smoothness
-						// Push the player away from the NPC smoothly
+					if (distance < 10.0f) {  // Push the player away from the npc with a threshold
 						direction /= distance;
 						previousPosition += direction * 5.0f * dt;
 						mCharacter.setPosition(previousPosition);
@@ -252,11 +247,6 @@ void RPGEngine::update()
 			if (!mNPCManager.playerClose(mCharacter.getPosition())) {
 				mShowDialogue = false;
 			}
-
-			/*if (mQuestManager.isCurrentStep("The First Trial", 2)) {
-				if (mGameManager.switchToTowerDefense(1))
-					mQuestManager.advanceQuest("The First Trial");
-			}*/
 		}
 		else {
 			sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
@@ -269,6 +259,7 @@ void RPGEngine::update()
 		mMenu.updateHover(mousePos);
 		mMenu.update(mCrystals, mInventory, mSkillTree);
 	}
+	mStartTowerDefenseMenu.update(mCrystals);
 }
 
 void RPGEngine::render()
@@ -280,19 +271,16 @@ void RPGEngine::render()
 	mMap.render(mWindow);
 	mCharacter.render(mWindow);
 	mNPCManager.render(mWindow);
-	//mQuestMenu.render(mWindow);
 
 	if (mShowDialogue) {
 		mWindow.setView(mWindow.getDefaultView());
 
-		// Create the dialogue box
 		sf::RectangleShape dialogueBox(sf::Vector2f(mWindow.getSize().x / 2.8f,
 			mWindow.getSize().y / 4.2f));
 		dialogueBox.setFillColor(sf::Color(50, 50, 50, 205));
 		dialogueBox.setPosition((mWindow.getSize().x - dialogueBox.getSize().x) / 2,
 			mWindow.getSize().y - dialogueBox.getSize().y - 35.0f);
 
-		// Create the NPC sprite
 		sf::CircleShape npcSprite(17.5f);
 		sf::Color npcColor = mCurrentInteractingNPC->getColor();
 		npcSprite.setFillColor(npcColor);
@@ -302,12 +290,10 @@ void RPGEngine::render()
 		mWindow.draw(dialogueBox);
 		mWindow.draw(npcSprite);
 
-		// Calculate the width available for text
 		float textWidth = dialogueBox.getSize().x - npcSprite.getRadius() * 2 - 40.0f;
 		std::vector<sf::String> lines = wrapText(mDialogueText.getString(), mFont, mDialogueText.getCharacterSize(), textWidth);
 
-		// Draw each line
-		float lineHeight = mDialogueText.getCharacterSize() * 1.35f; // Adjust line height if necessary
+		float lineHeight = mDialogueText.getCharacterSize() * 1.35f; 
 		float yOffset = dialogueBox.getPosition().y + 10.0f;
 		mDialogueText.setPosition(dialogueBox.getPosition().x + npcSprite.getRadius() * 2 + 35.0f, yOffset);
 
@@ -342,6 +328,7 @@ void RPGEngine::resume(int crystals)
 	mWindow.setView(mWindow.getDefaultView());
 	loadGame();
 	mCrystals = crystals;
+
 	if (mShowDialogue) {
 		mShowDialogue = false;
 		mNPCManager.resumeCurrentNPC();
@@ -372,7 +359,6 @@ void RPGEngine::loadGame() {
 	int crystals;
 
 	if (mSaveSystem.load(playerPosition, npcPositions, npcWaypoints, crystals)) {
-		std::cout << "Loaded player position: " << playerPosition.x << ", " << playerPosition.y << std::endl;
 		mCharacter.setPosition(playerPosition);
 
 		mNPCManager.loadNPCStates(npcPositions, npcWaypoints);
@@ -384,10 +370,8 @@ void RPGEngine::loadGame() {
 }
 
 void RPGEngine::resetSaveGame() {
-	// Open the save file in truncation mode, which clears its contents
 	std::ofstream saveFile("savegame.txt", std::ofstream::trunc);
 
-	// Optionally, check if the file was opened successfully
 	if (saveFile.is_open()) {
 		std::cout << "Save file cleared. Game will start from initial positions." << std::endl;
 	}
@@ -395,49 +379,9 @@ void RPGEngine::resetSaveGame() {
 		std::cerr << "Failed to clear save file." << std::endl;
 	}
 
-	// Close the file
 	saveFile.close();
 
-	// Reset the game state to the initial positions
 	mCharacter.setPosition(sf::Vector2f(400.f, 300.f));
-	mNPCManager.loadNPCStates({}, {}); // Pass empty vectors to reset NPC positions and waypoints
+	mNPCManager.loadNPCStates({}, {});
 	mCrystals = 100;
 }
-
-/*
-void RPGEngine::initializeQuests() {
-
-	// Add quest segments (steps) to the quest
-	QuestSegment step1(
-		"Talk to Elliot to start the quest.",
-		[this]() -> bool {
-			return mNPCManager.getCurrentNPC() == static_cast<ElliotMarlowe> &&
-				mNPCManager.getCurrentNPC().getActiveDialogueKey() == "quest1";
-		}
-	);
-
-	QuestSegment step2(
-		"Talk to Vincent to receive the task.",
-		[this]() -> bool {
-			return mNPCManager.getCurrentNPC() == "Vincent" &&
-				mNPCManager.getCurrentNPC().getActiveDialogueKey() == "task1";
-		}
-	);
-
-	QuestSegment step3(
-		"Complete the first level of the tower defense game.",
-		[this]() -> bool {
-			return isTowerDefenseLevelCompleted(1);
-		}
-	);
-
-	// Create QuestInfo object with basic quest information
-	QuestInfo questInfo("The First Trial", "First quest to test the player", {step1, step2, step3}, 200);  // reward is 100, modify as needed
-
-	// Create a Quest object using the QuestInfo
-	Quest theFirstTrial(questInfo);
-
-	// Add the quest to the QuestManager and QuestMenu
-	mQuestManager.addQuest(theFirstTrial);
-	mQuestMenu.addQuest(theFirstTrial);
-}*/

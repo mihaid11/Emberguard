@@ -9,7 +9,7 @@ StartTowerDefenseMenu::StartTowerDefenseMenu(sf::RenderWindow& window, const std
     mGameManager(gameManager), mAvailableTowersString(availableTowers), mCrystals(crystals),
     mLevel(level), mGameEngine(gameEngine)
 {
-    if (!mFont.loadFromFile("../../../assets/fonts/gameFont.ttf")) {
+    if (!mFont.loadFromFile("../assests/fonts/gameFont.ttf")) {
         std::cout << "Couldn't load font from file" << std::endl;
     }
 
@@ -153,4 +153,13 @@ void StartTowerDefenseMenu::selectTower(int towerIndex)
         mSelectedTowers[emptySlot] = mAvailableTowers[towerIndex].second;
         mAvailableTowers[towerIndex].first.setFillColor(sf::Color(50, 50, 50)); // Gray out to show it's selected
     }
+}
+
+void StartTowerDefenseMenu::update(int crystals)
+{
+    mCrystals = crystals;
+    mStartButton.setCallback([&]() {
+        mGameEngine->saveGame();
+        mGameManager->switchToTowerDefense(mCrystals, mLevel, mAvailableTowersString);
+        });
 }

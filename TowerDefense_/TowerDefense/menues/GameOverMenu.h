@@ -4,11 +4,13 @@
 #include <vector>
 
 class GameEngine;
+class GameManager;
 
 class GameOverMenu
 {
 public:
-	GameOverMenu(sf::RenderWindow& window, GameEngine* game, int level);
+	GameOverMenu(sf::RenderWindow& window, GameEngine* game, GameManager* gameManager,
+		int level, int crystals);
 
 	void render(sf::RenderWindow& window);
 	void handleMouseClick(const sf::Vector2f& mousePos);
@@ -16,12 +18,13 @@ public:
 
 private:
 	sf::RectangleShape mMenuShape;
-
 	std::vector<Button> mButtons;
 	Button restartButton;
-	Button quitButton;
+	Button exitButton;
 
 	GameEngine* mGame;
+	GameManager* mGameManager;
 	int mLevel;
+	int mCrystals;
 };
 

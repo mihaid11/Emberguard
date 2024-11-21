@@ -1,11 +1,13 @@
 #include "GameOverMenu.h"
 #include "../gamengine/GameEngine.h"
+#include "../../GameManager.h"
 #include <iostream>
 
-GameOverMenu::GameOverMenu(sf::RenderWindow& window, GameEngine* game, int level)
-	: mGame(game), mLevel(level),
+GameOverMenu::GameOverMenu(sf::RenderWindow& window, GameEngine* game, GameManager* gameManager,
+	int level, int crystals)
+	: mGame(game), mLevel(level), mCrystals(crystals), mGameManager(gameManager),
 	restartButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Restart"),
-	quitButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Quit")
+	exitButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Exit")
 {
 	mMenuShape.setSize(sf::Vector2f(270, 140));
 	mMenuShape.setFillColor(sf::Color(50, 50, 50, 255));
@@ -14,24 +16,29 @@ GameOverMenu::GameOverMenu(sf::RenderWindow& window, GameEngine* game, int level
 		(window.getSize().y - mMenuShape.getSize().y) / 2
 	);
 
-	quitButton.setPosition(sf::Vector2f(mMenuShape.getPosition().x + 45, mMenuShape.getPosition().y + 77));
+	exitButton.setPosition(sf::Vector2f(mMenuShape.getPosition().x + 45, mMenuShape.getPosition().y + 77));
 	restartButton.setPosition(sf::Vector2f(mMenuShape.getPosition().x + 45, mMenuShape.getPosition().y + 25));
 
 	restartButton.setCallback([this]() {
 		if (mGame) {
-			mGame->init(mLevel);
+			mGame->init(mLevel, mCrystals * 4 /5);
 		}
 		else {
 			std::cerr << "Error: Game is nullptr in restartButton callback." << std::endl;
 		}
 		});
 
-	quitButton.setCallback([&]() {
-		window.close();
+	exitButton.setCallback([&]() {
+		if (mGameManager) {
+			mGameManager->switchToRPG(mCrystals * 4 / 5);
+		}
+		else {
+			std::cerr << "Error: GameManager is nullptr in returnButton callback." << std::endl;
+		}
 		});
 
 	mButtons.push_back(restartButton);
-	mButtons.push_back(quitButton);
+	mButtons.push_back(exitButton);
 }
 
 void GameOverMenu::render(sf::RenderWindow& window)
