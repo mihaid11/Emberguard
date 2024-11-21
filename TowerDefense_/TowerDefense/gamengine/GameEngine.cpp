@@ -6,8 +6,9 @@ static float distance(const sf::Vector2f& a, const sf::Vector2f& b) {
     return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 }
 
-GameEngine::GameEngine()
+GameEngine::GameEngine(sf::RenderWindow& window, GameManager* gameManager)
     :
+    mWindow(window),
     mSpawnTimer(0.0f),
     mTowerHealth(100),
     mCurrentWave(1, 1, { 0 }),
@@ -27,8 +28,7 @@ GameEngine::GameEngine()
     mIsPaused(false),
     mSmallMenu(mWindow, this, mCurrentLevel),
     mLevelCompleteMenu(mWindow, this, mCurrentLevel),
-    mGameOverMenu(mWindow, this, mCurrentLevel),
-    mWindow(sf::VideoMode(1280,720), "TowerDefense"){
+    mGameOverMenu(mWindow, this, mCurrentLevel) {
 
     if (!mFont.loadFromFile("../assests/fonts/gameFont.ttf"))
         std::cout << "Couldn't load font" << std::endl;

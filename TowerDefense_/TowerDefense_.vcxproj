@@ -93,14 +93,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>External\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\External\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>External\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\..\External\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -133,54 +133,103 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy\EmpireScout.cpp" />
-    <ClCompile Include="Enemy\Enemy.cpp" />
-    <ClCompile Include="enemy\RadiationBerserker.cpp" />
-    <ClCompile Include="enemy\WastelandMarauder.cpp" />
-    <ClCompile Include="gamengine\GameEngine.cpp" />
-    <ClCompile Include="menues\Button.cpp" />
-    <ClCompile Include="menues\GameOverMenu.cpp" />
-    <ClCompile Include="menues\LevelCompleteMenu.cpp" />
-    <ClCompile Include="menues\SmallMenu.cpp" />
-    <ClCompile Include="player\Player.cpp" />
-    <ClCompile Include="player\PlayerMenu.cpp" />
-    <ClCompile Include="projectiles\FlameProjectile.cpp" />
-    <ClCompile Include="projectiles\LaserProjectile.cpp" />
-    <ClCompile Include="projectiles\Projectile.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Rpg\dialogueSystem\Dialogue.cpp" />
+    <ClCompile Include="Rpg\dialogueSystem\DialogueManager.cpp" />
+    <ClCompile Include="Rpg\dialogueSystem\DialogueSegment.cpp" />
+    <ClCompile Include="Rpg\gamengine\RPGEngine.cpp" />
+    <ClCompile Include="Rpg\inventory\Inventory.cpp" />
+    <ClCompile Include="Rpg\inventory\InventoryMenu.cpp" />
+    <ClCompile Include="Rpg\mainCharacter\MainCharacter.cpp" />
+    <ClCompile Include="Rpg\map\buildings\Building.cpp" />
+    <ClCompile Include="Rpg\map\GameMap.cpp" />
+    <ClCompile Include="Rpg\menues\Menu.cpp" />
+    <ClCompile Include="Rpg\menues\StartTowerDefenseMenu.cpp" />
+    <ClCompile Include="Rpg\npcs\ElliotMarlowe.cpp" />
+    <ClCompile Include="Rpg\npcs\GarrickStone.cpp" />
+    <ClCompile Include="Rpg\npcs\MiraStanton.cpp" />
+    <ClCompile Include="Rpg\npcs\NPC.cpp" />
+    <ClCompile Include="Rpg\npcs\NPCManager.cpp" />
+    <ClCompile Include="Rpg\npcs\SeraphinaLumeris.cpp" />
+    <ClCompile Include="Rpg\npcs\VincentHale.cpp" />
+    <ClCompile Include="Rpg\saveSystem\SaveSystem.cpp" />
+    <ClCompile Include="Rpg\skillTree\SkillNode.cpp" />
+    <ClCompile Include="Rpg\skillTree\SkillTree.cpp" />
+    <ClCompile Include="Rpg\skillTree\SkillTreeMenu.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="tower\FlameTurret.cpp" />
-    <ClCompile Include="tower\LaserTower.cpp" />
-    <ClCompile Include="tower\Tower.cpp" />
-    <ClCompile Include="tower\TowerMenu.cpp" />
-    <ClCompile Include="tower\TowerSelectionMenu.cpp" />
-    <ClCompile Include="tower\Upgrade.cpp" />
-    <ClCompile Include="waves\Map.cpp" />
-    <ClCompile Include="waves\Wave.cpp" />
+    <ClCompile Include="TowerDefense\enemy\EmpireScout.cpp" />
+    <ClCompile Include="TowerDefense\enemy\Enemy.cpp" />
+    <ClCompile Include="TowerDefense\enemy\RadiationBerserker.cpp" />
+    <ClCompile Include="TowerDefense\enemy\WastelandMarauder.cpp" />
+    <ClCompile Include="TowerDefense\gamengine\GameEngine.cpp" />
+    <ClCompile Include="TowerDefense\menues\Button.cpp" />
+    <ClCompile Include="TowerDefense\menues\GameOverMenu.cpp" />
+    <ClCompile Include="TowerDefense\menues\LevelCompleteMenu.cpp" />
+    <ClCompile Include="TowerDefense\menues\SmallMenu.cpp" />
+    <ClCompile Include="TowerDefense\player\Player.cpp" />
+    <ClCompile Include="TowerDefense\player\PlayerMenu.cpp" />
+    <ClCompile Include="TowerDefense\projectiles\FlameProjectile.cpp" />
+    <ClCompile Include="TowerDefense\projectiles\LaserProjectile.cpp" />
+    <ClCompile Include="TowerDefense\projectiles\Projectile.cpp" />
+    <ClCompile Include="TowerDefense\tower\FlameTurret.cpp" />
+    <ClCompile Include="TowerDefense\tower\LaserTower.cpp" />
+    <ClCompile Include="TowerDefense\tower\Tower.cpp" />
+    <ClCompile Include="TowerDefense\tower\TowerMenu.cpp" />
+    <ClCompile Include="TowerDefense\tower\TowerSelectionMenu.cpp" />
+    <ClCompile Include="TowerDefense\tower\Upgrade.cpp" />
+    <ClCompile Include="TowerDefense\waves\Map.cpp" />
+    <ClCompile Include="TowerDefense\waves\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemy\EmpireScout.h" />
-    <ClInclude Include="Enemy\Enemy.h" />
-    <ClInclude Include="enemy\RadiationBerserker.h" />
-    <ClInclude Include="enemy\WastelandMarauder.h" />
-    <ClInclude Include="gamengine\GameEngine.h" />
-    <ClInclude Include="menues\Button.h" />
-    <ClInclude Include="menues\GameOverMenu.h" />
-    <ClInclude Include="menues\LevelCompleteMenu.h" />
-    <ClInclude Include="menues\SmallMenu.h" />
-    <ClInclude Include="player\Player.h" />
-    <ClInclude Include="player\PlayerMenu.h" />
-    <ClInclude Include="projectiles\FlameProjectile.h" />
-    <ClInclude Include="projectiles\LaserProjectile.h" />
-    <ClInclude Include="projectiles\Projectile.h" />
-    <ClInclude Include="tower\FlameTurret.h" />
-    <ClInclude Include="tower\LaserTower.h" />
-    <ClInclude Include="tower\Tower.h" />
-    <ClInclude Include="tower\TowerMenu.h" />
-    <ClInclude Include="tower\TowerSelectionMenu.h" />
-    <ClInclude Include="tower\Upgrade.h" />
-    <ClInclude Include="waves\Map.h" />
-    <ClInclude Include="waves\PathsConfig.h" />
-    <ClInclude Include="waves\Wave.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Rpg\dialogueSystem\Dialogue.h" />
+    <ClInclude Include="Rpg\dialogueSystem\DialogueManager.h" />
+    <ClInclude Include="Rpg\dialogueSystem\DialogueSegment.h" />
+    <ClInclude Include="Rpg\gamengine\RPGEngine.h" />
+    <ClInclude Include="Rpg\inventory\Inventory.h" />
+    <ClInclude Include="Rpg\inventory\InventoryMenu.h" />
+    <ClInclude Include="Rpg\mainCharacter\MainCharacter.h" />
+    <ClInclude Include="Rpg\map\buildings\Building.h" />
+    <ClInclude Include="Rpg\map\GameMap.h" />
+    <ClInclude Include="Rpg\menues\Menu.h" />
+    <ClInclude Include="Rpg\menues\StartTowerDefenseMenu.h" />
+    <ClInclude Include="Rpg\npcs\ElliotMarlowe.h" />
+    <ClInclude Include="Rpg\npcs\GarrickStone.h" />
+    <ClInclude Include="Rpg\npcs\MiraStanton.h" />
+    <ClInclude Include="Rpg\npcs\NPC.h" />
+    <ClInclude Include="Rpg\npcs\NPCManager.h" />
+    <ClInclude Include="Rpg\npcs\SeraphinaLumeris.h" />
+    <ClInclude Include="Rpg\npcs\VincentHale.h" />
+    <ClInclude Include="Rpg\saveSystem\SaveSystem.h" />
+    <ClInclude Include="Rpg\skillTree\SkillNode.h" />
+    <ClInclude Include="Rpg\skillTree\SkillTree.h" />
+    <ClInclude Include="Rpg\skillTree\SkillTreeMenu.h" />
+    <ClInclude Include="TowerDefense\enemy\EmpireScout.h" />
+    <ClInclude Include="TowerDefense\enemy\Enemy.h" />
+    <ClInclude Include="TowerDefense\enemy\RadiationBerserker.h" />
+    <ClInclude Include="TowerDefense\enemy\WastelandMarauder.h" />
+    <ClInclude Include="TowerDefense\gamengine\GameEngine.h" />
+    <ClInclude Include="TowerDefense\menues\Button.h" />
+    <ClInclude Include="TowerDefense\menues\GameOverMenu.h" />
+    <ClInclude Include="TowerDefense\menues\LevelCompleteMenu.h" />
+    <ClInclude Include="TowerDefense\menues\SmallMenu.h" />
+    <ClInclude Include="TowerDefense\player\Player.h" />
+    <ClInclude Include="TowerDefense\player\PlayerMenu.h" />
+    <ClInclude Include="TowerDefense\projectiles\FlameProjectile.h" />
+    <ClInclude Include="TowerDefense\projectiles\LaserProjectile.h" />
+    <ClInclude Include="TowerDefense\projectiles\Projectile.h" />
+    <ClInclude Include="TowerDefense\tower\FlameTurret.h" />
+    <ClInclude Include="TowerDefense\tower\LaserTower.h" />
+    <ClInclude Include="TowerDefense\tower\Tower.h" />
+    <ClInclude Include="TowerDefense\tower\TowerMenu.h" />
+    <ClInclude Include="TowerDefense\tower\TowerSelectionMenu.h" />
+    <ClInclude Include="TowerDefense\tower\Upgrade.h" />
+    <ClInclude Include="TowerDefense\waves\Map.h" />
+    <ClInclude Include="TowerDefense\waves\PathsConfig.h" />
+    <ClInclude Include="TowerDefense\waves\Wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Rpg\saveSystem\savegame.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

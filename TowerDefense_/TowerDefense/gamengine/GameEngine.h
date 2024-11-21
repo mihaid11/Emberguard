@@ -20,7 +20,7 @@ class GameManager;
 class GameEngine
 {
 public:
-	GameEngine();
+	GameEngine(sf::RenderWindow& window, GameManager* gameManager);
 	~GameEngine();
 
 	void run();
@@ -41,7 +41,7 @@ private:
 
 	void updateButtonHover(sf::RectangleShape& button, sf::Text& buttonText, const sf::Vector2f& mousePos);
 
-	sf::RenderWindow mWindow;
+	sf::RenderWindow& mWindow;
 	Map mMap;
 	sf::Clock mClock;
 	float mSpawnTimer;

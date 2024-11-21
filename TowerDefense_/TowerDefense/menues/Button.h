@@ -17,6 +17,8 @@ public:
 	void setPosition(const sf::Vector2f& position);
 	void setText(const std::string& text);
 
+	void setBackgroundColor(sf::Color color);
+
 private:
 	sf::RectangleShape mButtonShape;
 	sf::Text mButtonText;

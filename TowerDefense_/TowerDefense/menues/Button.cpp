@@ -62,3 +62,8 @@ void Button::setText(const std::string& text)
 {
     mButtonText.setString(text);
 }
+
+void Button::setBackgroundColor(sf::Color color)
+{
+    mButtonShape.setFillColor(color);
+}
