@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include "../../GameManager.h"
 
 std::vector<sf::String> wrapText(const sf::String& text, const sf::Font& font, unsigned int characterSize, float boxWidth) {
 	std::vector<sf::String> lines;
@@ -40,11 +41,12 @@ std::vector<sf::String> wrapText(const sf::String& text, const sf::Font& font, u
 RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 	: mWindow(window),
 	mMap(),
+	mTimeSystem(1.2f),
 	mCharacter(sf::Vector2f(400.f, 300.f), mMap),
 	mView(sf::Vector2f(400.f, 300.f), sf::Vector2f(1280.f, 720.f)),
 	mShowDialogue(false),
 	mGameManager(gameManager),
-	mSaveSystem("savegame.txt"),
+	mSaveSystem("../../savegame.txt"),
 	mMiraStanton(sf::Vector2f(1000.0f, 900.0f)),
 	mElliotMarlowe(sf::Vector2f(100.0f, 0.0f)),
 	mGarrickStone(sf::Vector2f(-100.0f, 0.0f), gameManager),
@@ -88,15 +90,6 @@ RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 
 	//mStartTowerDefenseMenu = StartTowerDefenseMenu(window, mAvailableTowers, this, gameManager, mCurrentLevel, mCrystals);
 	loadGame();
-}
-
-void RPGEngine::run()
-{
-	while (mWindow.isOpen()) {
-		processEvents();
-		update();
-		render();
-	}
 }
 
 void RPGEngine::processEvents() {
@@ -244,6 +237,8 @@ void RPGEngine::update()
 			mNPCManager.update(dt);
 			mView.setCenter(mCharacter.getPosition());
 
+			mTimeSystem.update(dt);
+
 			if (!mNPCManager.playerClose(mCharacter.getPosition())) {
 				mShowDialogue = false;
 			}
@@ -264,13 +259,22 @@ void RPGEngine::update()
 
 void RPGEngine::render()
 {
+	std::string currentDate = mTimeSystem.getDateString();
+	std::string currentTime = mTimeSystem.getTimeString();
+
 	mWindow.clear();
+
+	sf::View originalView = mWindow.getView();
 
 	mWindow.setView(mView);
 
 	mMap.render(mWindow);
 	mCharacter.render(mWindow);
 	mNPCManager.render(mWindow);
+
+	mWindow.setView(mWindow.getDefaultView());
+
+	renderDateTime(mWindow, mFont, currentDate, currentTime);
 
 	if (mShowDialogue) {
 		mWindow.setView(mWindow.getDefaultView());
@@ -323,6 +327,31 @@ void RPGEngine::render()
 	mWindow.display();
 }
 
+void RPGEngine::renderDateTime(sf::RenderWindow& window, sf::Font& font, const std::string& date, const std::string& time)
+{
+	sf::RectangleShape background(sf::Vector2f(200, 80));
+	background.setFillColor(sf::Color(0, 0, 0, 150));
+	background.setPosition(window.getSize().x - 210, 10); 
+
+	sf::Text dateText;
+	dateText.setFont(font);
+	dateText.setString(date);
+	dateText.setCharacterSize(16);
+	dateText.setFillColor(sf::Color::White);
+	dateText.setPosition(window.getSize().x - 200, 20);
+
+	sf::Text timeText;
+	timeText.setFont(font);
+	timeText.setString(time);
+	timeText.setCharacterSize(16);
+	timeText.setFillColor(sf::Color::White);
+	timeText.setPosition(window.getSize().x - 200, 50);
+
+	window.draw(background);
+	window.draw(dateText);
+	window.draw(timeText);
+}
+
 void RPGEngine::resume(int crystals)
 {
 	mWindow.setView(mWindow.getDefaultView());
@@ -347,22 +376,35 @@ void RPGEngine::saveGame() {
 	std::vector<sf::Vector2f> npcPositions;
 	std::vector<int> npcWaypoints;
 
+	int year = mTimeSystem.getYear();
+	int day = mTimeSystem.getDay();
+	int hour = mTimeSystem.getHour();
+	int minute = mTimeSystem.getMinute();
+	
 	mNPCManager.saveNPCStates(npcPositions, npcWaypoints);
 
-	mSaveSystem.save(mCharacter.getPosition(), npcPositions, npcWaypoints, mCrystals);
+	mSaveSystem.save(mCharacter.getPosition(), npcPositions, npcWaypoints, mCrystals,
+		year, day, hour, minute);
 }
 
 void RPGEngine::loadGame() {
 	sf::Vector2f playerPosition;
 	std::vector<sf::Vector2f> npcPositions;
 	std::vector<int> npcWaypoints;
-	int crystals;
+	int crystals, year, day, hour, minute;
 
-	if (mSaveSystem.load(playerPosition, npcPositions, npcWaypoints, crystals)) {
+	if (mSaveSystem.load(playerPosition, npcPositions, npcWaypoints, crystals,
+		year, day, hour, minute)) {
 		mCharacter.setPosition(playerPosition);
 
 		mNPCManager.loadNPCStates(npcPositions, npcWaypoints);
 		mCrystals = crystals;
+
+		mTimeSystem.setYear(year);
+		mTimeSystem.setDay(day);
+		mTimeSystem.setHour(hour);
+		mTimeSystem.setMinute(minute);
+		mTimeSystem.resetTimeAccumulator();
 	}
 	else {
 		std::cerr << "Failed to load game data." << std::endl;

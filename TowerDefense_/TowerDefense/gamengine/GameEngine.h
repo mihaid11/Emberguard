@@ -14,6 +14,7 @@
 #include "../menues/SmallMenu.h"
 #include "../menues/GameOverMenu.h"
 #include "../menues/LevelCompleteMenu.h"
+#include "../../TimeSystem.h"
 
 class GameManager;
 
@@ -22,8 +23,6 @@ class GameEngine
 public:
 	GameEngine(sf::RenderWindow& window, GameManager* gameManager);
 	~GameEngine();
-
-	void run();
 
 	void processEvents();
 	void update();

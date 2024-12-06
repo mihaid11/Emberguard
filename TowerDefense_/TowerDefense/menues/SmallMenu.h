@@ -4,15 +4,17 @@
 #include "Button.h"
 
 class GameEngine;
+class GameManager;
 
 class SmallMenu
 {
 public:
-	SmallMenu(sf::RenderWindow& window, GameEngine* game, int level, int crystals);
+	SmallMenu(sf::RenderWindow& window, GameEngine* game, GameManager* gameManager, int level, int crystals);
 
 	void render(sf::RenderWindow& window);
 	void handleMouseClick(const sf::Vector2f& mousePos);
 	void updateHover(const sf::Vector2f& mousePos);
+	void update(int crystals);
 
 	bool isVisible() const;
 	void show();
@@ -26,6 +28,7 @@ private:
 	Button restartButton;
 
 	GameEngine* mGame;
+	GameManager* mGameManager;
 	int mLevel;
 	int mCrystals;
 	bool mIsVisible;

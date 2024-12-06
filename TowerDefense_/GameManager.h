@@ -2,6 +2,7 @@
 #include "Rpg/gamengine/RPGEngine.h"
 #include "TowerDefense/gamengine/GameEngine.h"
 #include "Rpg/dialogueSystem/DIalogueManager.h"
+#include "TimeSystem.h"
 
 enum class GameState {
     RPG,
@@ -30,6 +31,7 @@ private:
     GameState mCurrentState;
     RPGEngine mRpgEngine;
     GameEngine mTowerDefenseEngine;
+
 
     DialogueManager mDialogueManager;
 };

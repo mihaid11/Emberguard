@@ -10,36 +10,38 @@ MainCharacter::MainCharacter(const sf::Vector2f& position, GameMap& map)
 
 void MainCharacter::update(float dt)
 {
-    sf::Vector2f originalPosition = mPosition;
+    sf::Vector2f direction(0.f, 0.f);
 
-    // Move in the X direction
+    // Determine movement direction based on key inputs
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        mPosition.x -= mSpeed * dt;
+        direction.x -= 1.15f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        mPosition.x += mSpeed * dt;
+        direction.x += 1.15f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        direction.y -= 1.15f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        direction.y += 1.15f;
 
-    mShape.setPosition(mPosition);
-
-    // Check for X direction collision
-    if (mMap.checkCollision(mShape.getGlobalBounds())) {
-        mPosition.x = originalPosition.x;  // Revert to the original X position if there's a collision
-        mShape.setPosition(mPosition);
+    // Normalize the direction vector if it's not zero to avoid faster diagonal movement
+    if (direction.x != 0.f || direction.y != 0.f)
+    {
+        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+        direction /= length;  // Normalize the vector
     }
 
-    // Move in the Y direction
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        mPosition.y -= mSpeed * dt;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        mPosition.y += mSpeed * dt;
+    // Apply the movement based on the normalized direction
+    sf::Vector2f originalPosition = mPosition;
+    mPosition += direction * mSpeed * dt;
 
     mShape.setPosition(mPosition);
 
-    // Check for Y direction collision
+    // Check for collision and revert if necessary
     if (mMap.checkCollision(mShape.getGlobalBounds())) {
-        mPosition.y = originalPosition.y;  // Revert to the original Y position if there's a collision
+        mPosition = originalPosition;
         mShape.setPosition(mPosition);
     }
 }
+
 
 void MainCharacter::render(sf::RenderWindow& window)
 {

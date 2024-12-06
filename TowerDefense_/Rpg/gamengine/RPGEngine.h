@@ -13,6 +13,7 @@
 #include "../npcs/GarrickStone.h"
 #include "../npcs/VincentHale.h"
 #include "../npcs/SeraphinaLumeris.h"
+#include "../../TimeSystem.h"
 
 class GameManager;
 
@@ -20,11 +21,11 @@ class RPGEngine
 {
 public:
 	RPGEngine(sf::RenderWindow& window, GameManager* gameManager);
-	void run();
 
 	void processEvents();
 	void update();
 	void render();
+	void renderDateTime(sf::RenderWindow& window, sf::Font& font, const std::string& date, const std::string& time);
 	void resume(int crystals);
 
 	void saveGame();
@@ -68,5 +69,6 @@ private:
 	std::vector<std::string> mAvailableTowers;
 
 	NPC* mCurrentInteractingNPC;
+	TimeSystem mTimeSystem;
 };
 

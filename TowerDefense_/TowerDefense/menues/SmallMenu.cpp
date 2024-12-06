@@ -1,8 +1,10 @@
 #include "SmallMenu.h"
 #include "../gamengine/GameEngine.h"
+#include "../../GameManager.h"
 #include <iostream>
 
-SmallMenu::SmallMenu(sf::RenderWindow& window, GameEngine* game, int level, int crystals) : mIsVisible(false), mGame(game),
+SmallMenu::SmallMenu(sf::RenderWindow& window, GameEngine* game, GameManager* gameManager, int level, int crystals) : 
+mIsVisible(false), mGame(game), mGameManager(gameManager),
 quitButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Quit"),
 restartButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Restart"), mLevel(level), mCrystals(crystals)
 {
@@ -17,7 +19,12 @@ restartButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Restart"), mLevel(leve
     restartButton.setPosition(sf::Vector2f(mMenuBackground.getPosition().x + 45, mMenuBackground.getPosition().y + 25));
 
     quitButton.setCallback([&]() {
-        window.close();
+        if (mGameManager) {
+            mGameManager->switchToRPG(mCrystals * 4 / 5);
+        }
+        else {
+            std::cerr << "Error: GameManager is nullptr in returnButton callback." << std::endl;
+        }
         });
 
     restartButton.setCallback([this]() {
@@ -55,6 +62,11 @@ void SmallMenu::updateHover(const sf::Vector2f& mousePos) {
     for (auto& button : mButtons) {
         button.updateHover(mousePos);
     }
+}
+
+void SmallMenu::update(int crystals)
+{
+    mCrystals = crystals;
 }
 
 bool SmallMenu::isVisible() const {

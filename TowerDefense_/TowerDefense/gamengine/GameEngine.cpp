@@ -26,7 +26,7 @@ GameEngine::GameEngine(sf::RenderWindow& window, GameManager* gameManager)
     mGameOver(false),
     mLevelCompleted(false),
     mIsPaused(false),
-    mSmallMenu(mWindow, this, mCurrentLevel, mCrystals),
+    mSmallMenu(mWindow, this, gameManager, mCurrentLevel, mCrystals),
     mLevelCompleteMenu(mWindow, this, gameManager, mCurrentLevel, mCrystals),
     mGameOverMenu(mWindow, this, gameManager, mCurrentLevel, mCrystals) {
 
@@ -70,16 +70,6 @@ GameEngine::~GameEngine()
 {
     for (auto tower : mTowers) {
         delete tower;
-    }
-}
-
-void GameEngine::run()
-{
-    while (mWindow.isOpen())
-    {
-        processEvents();
-        update();
-        render();
     }
 }
 
@@ -314,13 +304,14 @@ void GameEngine::handleKeyPress(sf::Keyboard::Key keyCode) {
 void GameEngine::update()
 {
     if (!mGameOver && !mLevelCompleted) {
+        float dt = mClock.restart().asSeconds();
         if (mIsPaused) {
             sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
             mSmallMenu.updateHover(mousePos);
             return;
         }
-
-        float dt = mClock.restart().asSeconds();
+        //else
+        //    timeSystem.update(dt);
 
         mPlayer.update(dt, mEnemies);
         mPlayerMenu.updateHealthBar(mPlayer.getHealth());
@@ -341,7 +332,7 @@ void GameEngine::update()
 
             if (mCurrentWave.isComplete() && !enemiesLeft)
             {
-                if (mCurrentWaveNumber < 3) // Assuming 3 is the max number of waves
+                if (mCurrentWaveNumber < 3)
                 {
                     std::cout << "Wave " << mCurrentWaveNumber << " complete. Transitioning to wave " << mCurrentWaveNumber + 1 << std::endl;
 
@@ -457,6 +448,7 @@ void GameEngine::update()
         sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
         mLevelCompleteMenu.updateHover(mousePos);
     }
+    mSmallMenu.update(mCrystals);
 }
 
 void GameEngine::render()

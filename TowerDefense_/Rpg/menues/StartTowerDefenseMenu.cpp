@@ -138,7 +138,7 @@ void StartTowerDefenseMenu::deselectTower(int slotIndex)
     if (!mSelectedTowers[slotIndex].empty()) {
         for (auto& tower : mAvailableTowers) {
             if (tower.second == mSelectedTowers[slotIndex]) {
-                tower.first.setFillColor(sf::Color::Blue); // Restore color to indicate availability
+                tower.first.setFillColor(sf::Color::Blue); 
                 break;
             }
         }
@@ -151,7 +151,7 @@ void StartTowerDefenseMenu::selectTower(int towerIndex)
     int emptySlot = getEmptySlotIndex();
     if (emptySlot != -1) {
         mSelectedTowers[emptySlot] = mAvailableTowers[towerIndex].second;
-        mAvailableTowers[towerIndex].first.setFillColor(sf::Color(50, 50, 50)); // Gray out to show it's selected
+        mAvailableTowers[towerIndex].first.setFillColor(sf::Color(50, 50, 50));
     }
 }
 

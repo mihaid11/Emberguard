@@ -6,7 +6,8 @@ SaveSystem::SaveSystem(const std::string& saveFilePath)
     : mSaveFilePath(saveFilePath) {}
 
 void SaveSystem::save(const sf::Vector2f& playerPosition, const std::vector<sf::Vector2f>& npcPositions, const std::vector<int>& npcWaypoints,
-    const int& crystals) {
+    const int& crystals, const int& year, const int& day, const int& hour,
+    const int& minute) {
     std::ofstream outFile(mSaveFilePath);
     if (!outFile) {
         std::cerr << "Error opening save file for writing: " << mSaveFilePath << std::endl;
@@ -22,11 +23,13 @@ void SaveSystem::save(const sf::Vector2f& playerPosition, const std::vector<sf::
 
     outFile << crystals << std::endl;
 
+    outFile << year << " " << day << " " << hour << " " << minute << std::endl;
+
     outFile.close();
 }
 
 bool SaveSystem::load(sf::Vector2f& playerPosition, std::vector<sf::Vector2f>& npcPositions, std::vector<int>& npcWaypoints,
-    int& crystals) {
+    int& crystals, int& year, int& day, int& hour, int& minute) {
     std::ifstream inFile(mSaveFilePath);
     if (!inFile) {
         std::cerr << "Error opening save file for reading: " << mSaveFilePath << std::endl;
@@ -61,6 +64,23 @@ bool SaveSystem::load(sf::Vector2f& playerPosition, std::vector<sf::Vector2f>& n
 
     if (!(inFile >> crystals)) {
         std::cerr << "Error reading number of crystals from save file." << std::endl;
+        return false;
+    }
+
+    if (!(inFile >> year)) {
+        std::cerr << "Error reading year from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> day)) {
+        std::cerr << "Error reading day from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> hour)) {
+        std::cerr << "Error reading hour from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> minute)) {
+        std::cerr << "Error reading minute from save file." << std::endl;
         return false;
     }
 

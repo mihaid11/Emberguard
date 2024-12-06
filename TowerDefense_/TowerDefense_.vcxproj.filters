@@ -88,6 +88,9 @@
     <Filter Include="Rpg\Inventory">
       <UniqueIdentifier>{6f62b6e8-2e54-4a70-b4d2-5663b77d3924}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TimeSystem">
+      <UniqueIdentifier>{5e42b73a-bb44-4903-8c3e-5551b51e4dfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -227,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="Rpg\inventory\InventoryMenu.cpp">
       <Filter>Rpg\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeSystem.cpp">
+      <Filter>TimeSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,10 +374,11 @@
     <ClInclude Include="Rpg\inventory\InventoryMenu.h">
       <Filter>Rpg\Inventory</Filter>
     </ClInclude>
+    <ClInclude Include="TimeSystem.h">
+      <Filter>TimeSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Rpg\saveSystem\savegame.txt">
-      <Filter>Rpg\SaveSystem</Filter>
-    </Text>
+    <Text Include="savegame.txt" />
   </ItemGroup>
 </Project>

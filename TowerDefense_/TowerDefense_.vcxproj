@@ -157,6 +157,7 @@
     <ClCompile Include="Rpg\skillTree\SkillTree.cpp" />
     <ClCompile Include="Rpg\skillTree\SkillTreeMenu.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="TowerDefense\enemy\EmpireScout.cpp" />
     <ClCompile Include="TowerDefense\enemy\Enemy.cpp" />
     <ClCompile Include="TowerDefense\enemy\RadiationBerserker.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Rpg\skillTree\SkillNode.h" />
     <ClInclude Include="Rpg\skillTree\SkillTree.h" />
     <ClInclude Include="Rpg\skillTree\SkillTreeMenu.h" />
+    <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="TowerDefense\enemy\EmpireScout.h" />
     <ClInclude Include="TowerDefense\enemy\Enemy.h" />
     <ClInclude Include="TowerDefense\enemy\RadiationBerserker.h" />
@@ -229,7 +231,7 @@
     <ClInclude Include="TowerDefense\waves\Wave.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Rpg\saveSystem\savegame.txt" />
+    <Text Include="savegame.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

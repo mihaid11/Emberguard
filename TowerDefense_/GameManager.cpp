@@ -2,7 +2,7 @@
 #include <iostream>
 
 GameManager::GameManager() : mCurrentState(GameState::RPG), mWindow(sf::VideoMode(1280, 720), "TowerDefense"),
-mRpgEngine(mWindow, this), mTowerDefenseEngine(mWindow, this)
+    mRpgEngine(mWindow, this), mTowerDefenseEngine(mWindow, this)
 {
 }
 

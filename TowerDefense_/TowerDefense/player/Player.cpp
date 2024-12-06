@@ -20,26 +20,33 @@ Player::Player(const sf::Vector2f& position, std::vector<Projectile>& projectile
 
 void Player::update(float dt, const std::vector<Enemy>& enemies)
 {
-    // Handle player movement
     mIsMoving = false;
+    sf::Vector2f direction(0.f, 0.f);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        mPosition.y -= mSpeed * dt;
+        direction.y -= 1.f;
         mIsMoving = true;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        mPosition.y += mSpeed * dt;
+        direction.y += 1.f;
         mIsMoving = true;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        mPosition.x -= mSpeed * dt;
+        direction.x -= 1.f;
         mIsMoving = true;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        mPosition.x += mSpeed * dt;
+        direction.x += 1.f;
         mIsMoving = true;
     }
 
+    if (direction.x != 0.f || direction.y != 0.f)
+    {
+        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+        direction /= length; 
+    }
+
+    mPosition += direction * mSpeed * dt;
     mShape.setPosition(mPosition);
 
     // If the player is not moving, check for enemies and fire projectiles
