@@ -19,6 +19,11 @@ exitButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "Exit")
 	mInventoryMenu = std::make_unique<InventoryMenu>(inventory, sf::Vector2f(mMenuShape.getPosition().x + mMenuShape.getSize().x / 2, mMenuShape.getPosition().y + mMenuShape.getSize().y / 3),
 		sf::Vector2f(70.0f, 70.0f));
 
+	mHoveredZoneShape.setSize(sf::Vector2f(window.getSize().x * 3.0f / 4.0f, 58));
+	mHoveredZoneShape.setFillColor(sf::Color(10, 10, 10, 100));
+	mHoveredZoneShape.setPosition(sf::Vector2f((window.getSize().x - mMenuShape.getSize().x) / 2.0f,
+		(window.getSize().y - mMenuShape.getSize().y) / 2.0f));
+
 	sf::Vector2f buttonSize(80.0f, 35.0f);
 	float startX = mMenuShape.getPosition().x + 20.0f;
 	float startY = mMenuShape.getPosition().y + 10.0f;
@@ -103,6 +108,7 @@ void Menu::update(int crystals, const Inventory& inventory, const SkillTree& ski
 void Menu::render(sf::RenderWindow& window)
 {
 	window.draw(mMenuShape);
+	window.draw(mHoveredZoneShape);
 	window.draw(mCrystalText);
 	for (auto& button : mButtons) {
 		button.render(window);

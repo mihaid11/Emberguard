@@ -37,10 +37,10 @@ void InventoryMenu::updateHover(const sf::Vector2f& mousePos) {
 void InventoryMenu::handleMouseClick(const sf::Vector2f& mousePos) {
     if (mHoveredSlot != -1) {
         if (mDraggedSlot == -1) {
-            mDraggedSlot = mHoveredSlot; // Start dragging
+            mDraggedSlot = mHoveredSlot;
         } else {
-            mInventory.swapItems(mDraggedSlot, mHoveredSlot); // Swap items
-            mDraggedSlot = -1; // End dragging
+            mInventory.swapItems(mDraggedSlot, mHoveredSlot);
+            mDraggedSlot = -1;
         }
     }
 }

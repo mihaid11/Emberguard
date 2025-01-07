@@ -21,6 +21,7 @@ public:
 
 private:
 	sf::RectangleShape mMenuShape;
+	sf::RectangleShape mHoveredZoneShape;
 
 	std::vector<Button> mButtons;
 	Button skillTreeButton;

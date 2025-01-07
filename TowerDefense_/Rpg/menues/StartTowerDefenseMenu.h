@@ -21,6 +21,7 @@ public:
 
 private:
 	sf::RectangleShape mMenuShape;
+	sf::RectangleShape mHoveredZoneShape;
 	sf::Font mFont;
 	Button mStartButton;
 

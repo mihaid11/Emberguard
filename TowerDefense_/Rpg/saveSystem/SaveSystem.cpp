@@ -7,7 +7,9 @@ SaveSystem::SaveSystem(const std::string& saveFilePath)
 
 void SaveSystem::save(const sf::Vector2f& playerPosition, const std::vector<sf::Vector2f>& npcPositions, const std::vector<int>& npcWaypoints,
     const int& crystals, const int& year, const int& day, const int& hour,
-    const int& minute) {
+    const int& minute, const int& bankBalance, const int& hasBorrowActive, 
+    const int& penalty, const int& interest, const int& amountToRepay,
+    const int& repayDay) {
     std::ofstream outFile(mSaveFilePath);
     if (!outFile) {
         std::cerr << "Error opening save file for writing: " << mSaveFilePath << std::endl;
@@ -25,11 +27,17 @@ void SaveSystem::save(const sf::Vector2f& playerPosition, const std::vector<sf::
 
     outFile << year << " " << day << " " << hour << " " << minute << std::endl;
 
+    outFile << bankBalance << std::endl;
+
+    outFile << hasBorrowActive << " " << penalty << " " << interest << " " << amountToRepay
+        << " " << repayDay << std::endl;
+
     outFile.close();
 }
 
 bool SaveSystem::load(sf::Vector2f& playerPosition, std::vector<sf::Vector2f>& npcPositions, std::vector<int>& npcWaypoints,
-    int& crystals, int& year, int& day, int& hour, int& minute) {
+    int& crystals, int& year, int& day, int& hour, int& minute, int& bankBalance, 
+    int& hasBorrowActive, int& penalty, int& interest, int& amountToRepay, int& repayDay) {
     std::ifstream inFile(mSaveFilePath);
     if (!inFile) {
         std::cerr << "Error opening save file for reading: " << mSaveFilePath << std::endl;
@@ -66,7 +74,6 @@ bool SaveSystem::load(sf::Vector2f& playerPosition, std::vector<sf::Vector2f>& n
         std::cerr << "Error reading number of crystals from save file." << std::endl;
         return false;
     }
-
     if (!(inFile >> year)) {
         std::cerr << "Error reading year from save file." << std::endl;
         return false;
@@ -81,6 +88,30 @@ bool SaveSystem::load(sf::Vector2f& playerPosition, std::vector<sf::Vector2f>& n
     }
     if (!(inFile >> minute)) {
         std::cerr << "Error reading minute from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> bankBalance)) {
+        std::cerr << "Error reading bank balance from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> hasBorrowActive)) {
+        std::cerr << "Error reading active borrow from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> penalty)) {
+        std::cerr << "Error reading penalty from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> interest)) {
+        std::cerr << "Error reading interest from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> amountToRepay)) {
+        std::cerr << "Error reading amount to repay from save file." << std::endl;
+        return false;
+    }
+    if (!(inFile >> repayDay)) {
+        std::cerr << "Error reading repay day from save file." << std::endl;
         return false;
     }
 

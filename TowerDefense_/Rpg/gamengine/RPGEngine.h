@@ -14,6 +14,7 @@
 #include "../npcs/VincentHale.h"
 #include "../npcs/SeraphinaLumeris.h"
 #include "../../TimeSystem.h"
+#include "../menues/BankMenu.h"
 
 class GameManager;
 
@@ -66,6 +67,9 @@ private:
 	Inventory mInventory;
 	Menu mMenu;
 	StartTowerDefenseMenu mStartTowerDefenseMenu;
+	BankMenu mBankMenu;
+	bool mShowBankMenu;
+
 	std::vector<std::string> mAvailableTowers;
 
 	NPC* mCurrentInteractingNPC;

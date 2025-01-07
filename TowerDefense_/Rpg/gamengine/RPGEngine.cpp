@@ -62,7 +62,9 @@ RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 	mCrystals(100),
 	mCurrentLevel(1),
 	mAvailableTowers({ "LaserTower", "FlameTurret" }),
-	mStartTowerDefenseMenu(window, mAvailableTowers, this, gameManager, mCurrentLevel, mCrystals)
+	mStartTowerDefenseMenu(window, mAvailableTowers, this, gameManager, mCurrentLevel, mCrystals),
+	mBankMenu(window, mCrystals, 200, mTimeSystem),
+	mShowBankMenu(false)
 	//,mShopMenu(window, mCrystals) 
 	{
 
@@ -132,6 +134,9 @@ void RPGEngine::processEvents() {
 				else if (mShowStartMenu) {
 					mShowStartMenu = false;
 				}
+				else if (mShowBankMenu) {
+					mShowBankMenu = false;
+				}
 				else {
 					mShowMenu = !mShowMenu;
 				}
@@ -173,6 +178,23 @@ void RPGEngine::processEvents() {
 				else
 					mShowStartMenu = false;
 			}
+			else if (event.key.code == sf::Keyboard::B) {
+				mShowBankMenu = !mShowBankMenu;
+
+				if (mShowBankMenu) {
+					mShowMenu = false;
+					mShowStartMenu = false;
+					mShowShopMenu = false;
+					if (mShowDialogue) {
+						mShowDialogue = false;
+						if (mCurrentInteractingNPC) {
+							mCurrentInteractingNPC->resetDialogue();
+							mCurrentInteractingNPC->resumeMovement();
+							mCurrentInteractingNPC = nullptr;
+						}
+					}
+				}
+			}
 			else if (event.key.code == sf::Keyboard::K) {
 				if (!mShowShopMenu) {
 					mShowShopMenu = true;
@@ -201,6 +223,9 @@ void RPGEngine::processEvents() {
 				if (mShowStartMenu) {
 					mStartTowerDefenseMenu.handleMouseClick(mousePos);
 				}
+				if (mShowBankMenu) {
+					mBankMenu.handleMouseClick(mousePos);
+				}
 			}
 		}
 	}
@@ -212,35 +237,47 @@ void RPGEngine::update()
 
 	if (!mShowMenu) {
 		if (!mShowStartMenu) {
-			sf::Vector2f previousPosition = mCharacter.getPosition();
+			if (!mShowBankMenu) {
+				sf::Vector2f previousPosition = mCharacter.getPosition();
 
-			if (!mShowDialogue)
-				mCharacter.update(dt);
+				if (!mShowDialogue)
+					mCharacter.update(dt);
 
-			if (mMap.checkCollision(mCharacter.getBounds()))
-				mCharacter.setPosition(previousPosition);
+				if (mMap.checkCollision(mCharacter.getBounds()))
+					mCharacter.setPosition(previousPosition);
 
-			for (auto& npc : mNPCManager.getNPCs()) {
-				if (npc->getBounds().intersects(mCharacter.getBounds())) {
-					sf::Vector2f npcPos = npc->getPosition();
-					sf::Vector2f direction = previousPosition - npcPos;
-					float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+				for (auto& npc : mNPCManager.getNPCs()) {
+					if (npc->getBounds().intersects(mCharacter.getBounds())) {
+						sf::Vector2f npcPos = npc->getPosition();
+						sf::Vector2f direction = previousPosition - npcPos;
+						float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-					if (distance < 10.0f) {  // Push the player away from the npc with a threshold
-						direction /= distance;
-						previousPosition += direction * 5.0f * dt;
-						mCharacter.setPosition(previousPosition);
+						if (distance < 10.0f) {  // Push the player away from the npc with a threshold
+							direction /= distance;
+							previousPosition += direction * 5.0f * dt;
+							mCharacter.setPosition(previousPosition);
+						}
 					}
 				}
+
+				mNPCManager.update(dt);
+				mView.setCenter(mCharacter.getPosition());
+
+				mTimeSystem.update(dt);
+
+				if (!mNPCManager.playerClose(mCharacter.getPosition())) {
+					mShowDialogue = false;
+				}
+
+				if (mTimeSystem.getDay() == mBankMenu.getRepaymentDay()) {
+					mCrystals -= mBankMenu.getLoanAmount();
+					mBankMenu.resetBorrowStats();
+				}
 			}
-
-			mNPCManager.update(dt);
-			mView.setCenter(mCharacter.getPosition());
-
-			mTimeSystem.update(dt);
-
-			if (!mNPCManager.playerClose(mCharacter.getPosition())) {
-				mShowDialogue = false;
+			else {
+				sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
+				mBankMenu.updateHover(mousePos);
+				mBankMenu.update();
 			}
 		}
 		else {
@@ -272,9 +309,10 @@ void RPGEngine::render()
 	mCharacter.render(mWindow);
 	mNPCManager.render(mWindow);
 
-	mWindow.setView(mWindow.getDefaultView());
-
-	renderDateTime(mWindow, mFont, currentDate, currentTime);
+	if (!mShowBankMenu && !mShowMenu && !mShowStartMenu) {
+		mWindow.setView(mWindow.getDefaultView());
+		renderDateTime(mWindow, mFont, currentDate, currentTime);
+	}
 
 	if (mShowDialogue) {
 		mWindow.setView(mWindow.getDefaultView());
@@ -317,6 +355,11 @@ void RPGEngine::render()
 	if (mShowStartMenu) {
 		mWindow.setView(mWindow.getDefaultView());
 		mStartTowerDefenseMenu.render(mWindow);
+	}
+
+	if (mShowBankMenu) {
+		mWindow.setView(mWindow.getDefaultView());
+		mBankMenu.render(mWindow);
 	}
 
 	/*if (mShowShopMenu) {
@@ -380,21 +423,31 @@ void RPGEngine::saveGame() {
 	int day = mTimeSystem.getDay();
 	int hour = mTimeSystem.getHour();
 	int minute = mTimeSystem.getMinute();
+	int bankBalance = mBankMenu.getBankBalance();
+
+	int hasBorrowActive = (int)mBankMenu.hasActiveBorrow();
+	int penalty = mBankMenu.getPenalty();
+	int interest = mBankMenu.getInterest();
+	int amountToRepay = mBankMenu.getAmounToRepay();
+	int repayDay = mBankMenu.getRepaymentDay();
 	
 	mNPCManager.saveNPCStates(npcPositions, npcWaypoints);
 
 	mSaveSystem.save(mCharacter.getPosition(), npcPositions, npcWaypoints, mCrystals,
-		year, day, hour, minute);
+		year, day, hour, minute, bankBalance, hasBorrowActive, penalty, interest, amountToRepay,
+		repayDay);
 }
 
 void RPGEngine::loadGame() {
 	sf::Vector2f playerPosition;
 	std::vector<sf::Vector2f> npcPositions;
 	std::vector<int> npcWaypoints;
-	int crystals, year, day, hour, minute;
+	int crystals, year, day, hour, minute, bankBalance, penalty, interest, amountToRepay,
+		repayDay, hasBorrowActive;
 
 	if (mSaveSystem.load(playerPosition, npcPositions, npcWaypoints, crystals,
-		year, day, hour, minute)) {
+		year, day, hour, minute, bankBalance, hasBorrowActive, penalty, interest, 
+		amountToRepay, repayDay)) {
 		mCharacter.setPosition(playerPosition);
 
 		mNPCManager.loadNPCStates(npcPositions, npcWaypoints);
@@ -405,6 +458,15 @@ void RPGEngine::loadGame() {
 		mTimeSystem.setHour(hour);
 		mTimeSystem.setMinute(minute);
 		mTimeSystem.resetTimeAccumulator();
+
+		bool borrowActive;
+		if (hasBorrowActive)
+			borrowActive = true;
+		else
+			borrowActive = false;
+			
+		mBankMenu.setBankBalance(bankBalance);
+		mBankMenu.setBorrowStats(borrowActive, penalty, interest, amountToRepay, repayDay);
 	}
 	else {
 		std::cerr << "Failed to load game data." << std::endl;
@@ -426,4 +488,13 @@ void RPGEngine::resetSaveGame() {
 	mCharacter.setPosition(sf::Vector2f(400.f, 300.f));
 	mNPCManager.loadNPCStates({}, {});
 	mCrystals = 100;
+
+	mTimeSystem.setYear(1);
+	mTimeSystem.setDay(1);
+	mTimeSystem.setHour(6);
+	mTimeSystem.setMinute(0);
+	mTimeSystem.resetTimeAccumulator();
+
+	mBankMenu.setBankBalance(0);
+	mBankMenu.resetBorrowStats();
 }

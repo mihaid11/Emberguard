@@ -234,6 +234,18 @@
     <ClCompile Include="TimeSystem.cpp">
       <Filter>TimeSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Rpg\menues\BankMenu.cpp">
+      <Filter>Rpg\Menues</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\menues\WithdrawMenu.cpp">
+      <Filter>Rpg\Menues</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\menues\DepositMenu.cpp">
+      <Filter>Rpg\Menues</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\menues\BorrowMenu.cpp">
+      <Filter>Rpg\Menues</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TowerDefense\tower\Upgrade.h">
@@ -377,8 +389,22 @@
     <ClInclude Include="TimeSystem.h">
       <Filter>TimeSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Rpg\menues\BankMenu.h">
+      <Filter>Rpg\Menues</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg\menues\WithdrawMenu.h">
+      <Filter>Rpg\Menues</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg\menues\DepositMenu.h">
+      <Filter>Rpg\Menues</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg\menues\BorrowMenu.h">
+      <Filter>Rpg\Menues</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="savegame.txt" />
+    <Text Include="savegame.txt">
+      <Filter>Rpg\SaveSystem</Filter>
+    </Text>
   </ItemGroup>
 </Project>

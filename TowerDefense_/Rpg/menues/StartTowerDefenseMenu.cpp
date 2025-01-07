@@ -18,6 +18,11 @@ StartTowerDefenseMenu::StartTowerDefenseMenu(sf::RenderWindow& window, const std
     mMenuShape.setPosition(sf::Vector2f((window.getSize().x - mMenuShape.getSize().x) / 2.0f,
         (window.getSize().y - mMenuShape.getSize().y) / 2.0f));
 
+    mHoveredZoneShape.setSize(sf::Vector2f(window.getSize().x * 3.0f / 4.0f, 58));
+    mHoveredZoneShape.setFillColor(sf::Color(10, 10, 10, 100));
+    mHoveredZoneShape.setPosition(sf::Vector2f((window.getSize().x - mMenuShape.getSize().x) / 2.0f,
+        (window.getSize().y - mMenuShape.getSize().y) / 2.0f));
+
     // Initialize the slots for selected towers
     for (int i = 0; i < 6; ++i) {
         sf::RectangleShape slot(sf::Vector2f(50.0f, 50.0f));
@@ -63,7 +68,7 @@ void StartTowerDefenseMenu::initializeTowers(const std::vector<std::string>& ava
 void StartTowerDefenseMenu::render(sf::RenderWindow& window)
 {
     window.draw(mMenuShape);
-
+    window.draw(mHoveredZoneShape);
     for (const auto& slot : mTowerSlots) {
         window.draw(slot);
     }
