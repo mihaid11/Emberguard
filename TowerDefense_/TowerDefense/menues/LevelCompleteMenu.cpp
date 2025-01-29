@@ -6,7 +6,7 @@
 LevelCompleteMenu::LevelCompleteMenu(sf::RenderWindow& window, GameEngine* game,
 	GameManager* gameManager, int level, int crystals)
 	: mGame(game), mGameManager(gameManager), mLevel(level), mCrystals(crystals),
-	continueButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Play Again")
+	continueButton(sf::Vector2f(0, 0), sf::Vector2f(175, 40), "Continue")
 
 {
 	mMenuShape.setSize(sf::Vector2f(270,140));

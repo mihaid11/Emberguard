@@ -6,11 +6,12 @@ class WithdrawMenu
 {
 public:
 	WithdrawMenu(sf::RenderWindow& window, const sf::Vector2f position,
-		const sf::Vector2f size, int& crystals, int& bankBalances);
+		const sf::Vector2f size, int& crystals, int& bankBalances, int& storageCapacity);
 	void render(sf::RenderWindow& window);
 	void handleClicks(const sf::Vector2f& mousePos);
 	void updateHover(const sf::Vector2f& mousePos);
 	void update();
+	void restart();
 
 private:
 	sf::RectangleShape mMenuShape;
@@ -29,5 +30,6 @@ private:
 	int mAmountToWithdraw;
 	int& mCrystals;
 	int& mBankBalance;
+	int& mStorageCapacity;
 };
 

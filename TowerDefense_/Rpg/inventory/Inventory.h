@@ -1,31 +1,30 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <map>
-#include <string>
 #include <vector>
+#include <memory>
+#include "items/Item.h"
 
 struct InventoryItem {
-    std::string itemID;
+    std::shared_ptr<Item> item;
     int quantity;
 };
 
-class Inventory 
-{
+class Inventory {
 public:
     Inventory(int rows = 2, int cols = 3);
 
-    void addItem(const std::string& itemName, int quantity);
+    void addItem(std::unique_ptr<Item> item, int quantity);
     void swapItems(int slot1, int slot2);
     int getItemQuantityAt(int slot) const;
-    const std::string& getItemAt(int slot) const;
+    const Item* getItemAt(int slot) const;
     int getSlotCount() const;
     void resize(int newRows, int newCols);
+    void removeItemAt(int slotIndex);
 
 private:
-    std::vector<std::pair<std::string, int>> mSlots;
+    std::vector<InventoryItem> mSlots;
     int mRows;
     int mCols;
-    
+
     int getFirstEmptySlot() const;
-    int findSlotWithItem(const std::string& item) const;
+    int findSlotWithItem(int id) const;
 };

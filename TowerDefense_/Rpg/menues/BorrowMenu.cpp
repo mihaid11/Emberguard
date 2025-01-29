@@ -118,6 +118,10 @@ BorrowMenu::BorrowMenu(sf::RenderWindow& window, const sf::Vector2f position,
 void BorrowMenu::render(sf::RenderWindow& window)
 {
 	window.draw(mMenuShape);
+	window.draw(mRepayment);
+	window.draw(mInterestText);
+	window.draw(mTotalRepay);
+	window.draw(mPenaltyText);
 
 	if (mHasBorrowActive == false) {
 		window.draw(mLoanAmount);
@@ -128,10 +132,6 @@ void BorrowMenu::render(sf::RenderWindow& window)
 	else {
 		window.draw(mBorrowActiveText);
 	}
-	window.draw(mRepayment);
-	window.draw(mInterestText);
-	window.draw(mTotalRepay);
-	window.draw(mPenaltyText);
 
 	if (mConfirmShowing)
 	{
@@ -215,6 +215,11 @@ int BorrowMenu::getRepaymentDay()
 bool BorrowMenu::getActiveBorrow()
 {
 	return mHasBorrowActive;
+}
+
+void BorrowMenu::restart()
+{
+	mConfirmShowing = false;
 }
 
 void BorrowMenu::reset()

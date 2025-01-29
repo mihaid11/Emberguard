@@ -2,13 +2,14 @@
 #include <iostream>
 
 WithdrawMenu::WithdrawMenu(sf::RenderWindow& window, const sf::Vector2f position,
-	const sf::Vector2f size, int& crystals, int& bankBalance)
+	const sf::Vector2f size, int& crystals, int& bankBalance, int& storageCapacity)
 	:m100Button(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "100"),
 	m250Button(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "250"),
 	m500Button(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "500"),
 	mConfirmButton(sf::Vector2f(0, 0), sf::Vector2f(200.0f, 40.0f), "Confirm Withdrawal"),
 	mBackButton(sf::Vector2f(0, 0), sf::Vector2f(100.0f, 40.0f), "Back"),
-	mConfirmShowing(false), mAmountToWithdraw(0), mCrystals(crystals), mBankBalance(bankBalance)
+	mConfirmShowing(false), mAmountToWithdraw(0), mCrystals(crystals), mBankBalance(bankBalance),
+	mStorageCapacity(storageCapacity)
 {
 	if (!mFont.loadFromFile("../assests/fonts/gameFont.ttf")) {
 		std::cerr << "Failed to load font for BankMenu!" << std::endl;
@@ -145,10 +146,16 @@ void WithdrawMenu::update()
 		mCrystalBalance.setString("Crystals: " + std::to_string(mCrystals) + " + " + 
 			std::to_string(mAmountToWithdraw));
 		mBalance.setString("Bank Balance: " + std::to_string(mBankBalance) + " - " +
-			std::to_string(mAmountToWithdraw));
+			std::to_string(mAmountToWithdraw) + " / " + std::to_string(mStorageCapacity));
 	}
 	else {
 		mCrystalBalance.setString("Crystals: " + std::to_string(mCrystals));
-		mBalance.setString("Bank Balance: " + std::to_string(mBankBalance));
+		mBalance.setString("Bank Balance: " + std::to_string(mBankBalance) + " / " +
+		std::to_string(mStorageCapacity));
 	}
+}
+
+void WithdrawMenu::restart()
+{
+	mConfirmShowing = false;
 }

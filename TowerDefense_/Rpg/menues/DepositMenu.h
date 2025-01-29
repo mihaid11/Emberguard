@@ -11,6 +11,7 @@ public:
 	void handleClicks(const sf::Vector2f& mousePos);
 	void updateHover(const sf::Vector2f& mousePos);
 	void update();
+	void restart();
 
 private:
 	sf::RectangleShape mMenuShape;
@@ -23,14 +24,17 @@ private:
 	sf::Text mBalance;
 	sf::Text mCrystalBalance;
 	sf::Text mAmount;
-	sf::Text mStorageFullText;
+	sf::Text mCanDepositOnlyText;
 	sf::Font mFont;
 
 	bool mConfirmShowing;
-	bool mStorageFull;
+	bool mStorageWillBeFull;
 	int mAmountToDeposit;
 	int& mCrystals;
 	int& mBankBalance;
 	int& mStorageCapacity;
+
+	bool mStorageAlreadyFull;
+	sf::Text mStorageFullText;
 };
 

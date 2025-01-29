@@ -32,7 +32,6 @@ private:
     RPGEngine mRpgEngine;
     GameEngine mTowerDefenseEngine;
 
-
     DialogueManager mDialogueManager;
 };
 

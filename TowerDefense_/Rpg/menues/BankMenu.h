@@ -11,7 +11,7 @@
 class BankMenu
 {
 public:
-	BankMenu(sf::RenderWindow& window, int& crystals, int storageCapacity,
+	BankMenu(sf::RenderWindow& window, int& crystals, int& storageCapacity,
         TimeSystem& timeSystem);
 	void render(sf::RenderWindow& window);
     void update();
@@ -34,6 +34,8 @@ public:
 
     bool hasActiveBorrow();
 
+    void restart();
+
 private:
     sf::Text mTitle;
     sf::Font mFont;
@@ -49,7 +51,6 @@ private:
     std::unique_ptr<BorrowMenu> mBorrowMenu;
 
     int& mCrystals;
-    int& mStorageCapacity;
     std::string mCurrentMenu;
     int mBankBalance;
 

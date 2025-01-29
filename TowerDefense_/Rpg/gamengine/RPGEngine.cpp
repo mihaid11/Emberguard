@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <math.h>
 #include "../../GameManager.h"
 
 std::vector<sf::String> wrapText(const sf::String& text, const sf::Font& font, unsigned int characterSize, float boxWidth) {
@@ -55,15 +56,16 @@ RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 	mNPCManager(),
 	mCurrentInteractingNPC(nullptr),
 	mSkillTree(),
-	mMenu(window, mSkillTree, mInventory),
+	mMenu(window, mSkillTree, mInventory, mCharacter.getActualPosition(), mDroppedItems, *this),
 	mShowMenu(false),
 	mShowStartMenu(false),
 	mShowShopMenu(false),
 	mCrystals(100),
+	mStorageCapacity(500),
 	mCurrentLevel(1),
 	mAvailableTowers({ "LaserTower", "FlameTurret" }),
 	mStartTowerDefenseMenu(window, mAvailableTowers, this, gameManager, mCurrentLevel, mCrystals),
-	mBankMenu(window, mCrystals, 200, mTimeSystem),
+	mBankMenu(window, mCrystals, mStorageCapacity, mTimeSystem),
 	mShowBankMenu(false)
 	//,mShopMenu(window, mCrystals) 
 	{
@@ -91,6 +93,11 @@ RPGEngine::RPGEngine(sf::RenderWindow& window, GameManager* gameManager)
 	//mAvailableTowers.push_back("FlameTurret");
 
 	//mStartTowerDefenseMenu = StartTowerDefenseMenu(window, mAvailableTowers, this, gameManager, mCurrentLevel, mCrystals);
+	std::unique_ptr<Wood> woodItem = std::make_unique<Wood>();
+	mInventory.addItem(std::move(woodItem), 1);
+	
+	std::unique_ptr<TowerBlueprint> towerB = std::make_unique<TowerBlueprint>();
+	mInventory.addItem(std::move(towerB), 5);
 	loadGame();
 }
 
@@ -136,9 +143,12 @@ void RPGEngine::processEvents() {
 				}
 				else if (mShowBankMenu) {
 					mShowBankMenu = false;
+					mBankMenu.restart();
 				}
 				else {
 					mShowMenu = !mShowMenu;
+					if (!mShowMenu)
+						mMenu.restart();
 				}
 
 				if (mShowShopMenu) {
@@ -194,6 +204,8 @@ void RPGEngine::processEvents() {
 						}
 					}
 				}
+				else
+					mBankMenu.restart();
 			}
 			else if (event.key.code == sf::Keyboard::K) {
 				if (!mShowShopMenu) {
@@ -212,6 +224,25 @@ void RPGEngine::processEvents() {
 				}
 				else
 					mShowShopMenu = false;
+			}
+			else if (event.key.code == sf::Keyboard::Q)
+			{
+				if (mShowMenu && mMenu.getMenuType() == "Inventory")
+				{
+					int slotIndex = mMenu.getInventoryMenu().getHoveredSlot();
+					if (slotIndex != -1)
+					{
+						if (mInventory.getItemAt(slotIndex))
+						{
+							const Item* item = mInventory.getItemAt(slotIndex);
+							const DroppedItem dropItem = DroppedItem(item, mCharacter.getPosition(),
+								mInventory.getItemQuantityAt(slotIndex));
+
+							mInventory.removeItemAt(slotIndex);
+							mDroppedItems.push_back(dropItem);
+						}
+					}
+				}
 			}
 		}
 		else if (event.type == sf::Event::MouseButtonPressed) {
@@ -273,6 +304,36 @@ void RPGEngine::update()
 					mCrystals -= mBankMenu.getLoanAmount();
 					mBankMenu.resetBorrowStats();
 				}
+
+				for (auto it = mDroppedItems.begin(); it != mDroppedItems.end();)
+				{
+					float distance = std::sqrt(
+						std::pow(mCharacter.getPosition().x - it->getPosition().x, 2) +
+						std::pow(mCharacter.getPosition().y - it->getPosition().y, 2)
+					);
+
+					if (it->getPickUpCap())
+					{
+
+						if (distance < 35.f)
+						{
+							const Item* item = it->getItem();
+							if (item->getType() == "Wood")
+								mInventory.addItem(std::make_unique<Wood>(), it->getQuantity());
+							else if (item->getType() == "TowerBlueprint")
+								mInventory.addItem(std::make_unique<TowerBlueprint>(), it->getQuantity());
+
+							it = mDroppedItems.erase(it);
+							continue;
+						}
+					}
+					else
+					{
+						if (distance > 35.f)
+							it->setPickUpCap(true);
+					}
+					++it;
+				}
 			}
 			else {
 				sf::Vector2f mousePos = mWindow.mapPixelToCoords(sf::Mouse::getPosition(mWindow));
@@ -308,6 +369,9 @@ void RPGEngine::render()
 	mMap.render(mWindow);
 	mCharacter.render(mWindow);
 	mNPCManager.render(mWindow);
+
+	for (auto& droppedItem : mDroppedItems)
+		droppedItem.render(mWindow);
 
 	if (!mShowBankMenu && !mShowMenu && !mShowStartMenu) {
 		mWindow.setView(mWindow.getDefaultView());
@@ -419,6 +483,13 @@ void RPGEngine::saveGame() {
 	std::vector<sf::Vector2f> npcPositions;
 	std::vector<int> npcWaypoints;
 
+	std::vector<int> inventoryItemId;
+	std::vector<int> inventoryItemQuantity;
+	std::vector<int> droppedItemId;
+	std::vector<float> droppedItemXPos;
+	std::vector<float> droppedItemYPos;
+	std::vector<int> droppedItemQuantity;
+
 	int year = mTimeSystem.getYear();
 	int day = mTimeSystem.getDay();
 	int hour = mTimeSystem.getHour();
@@ -433,9 +504,34 @@ void RPGEngine::saveGame() {
 	
 	mNPCManager.saveNPCStates(npcPositions, npcWaypoints);
 
+	for (int ind = 0; ind < mInventory.getSlotCount(); ++ind)
+	{
+		if (mInventory.getItemAt(ind))
+		{
+			inventoryItemId.push_back(mInventory.getItemAt(ind)->getId());
+			inventoryItemQuantity.push_back(mInventory.getItemQuantityAt(ind));
+		}
+	}
+	
+	for (auto& droppedItem : mDroppedItems)
+	{
+		droppedItemId.push_back(droppedItem.getItem()->getId());
+		droppedItemXPos.push_back(droppedItem.getPosition().x);
+		droppedItemYPos.push_back(droppedItem.getPosition().y);
+		droppedItemQuantity.push_back(droppedItem.getQuantity());
+	}
+
+
+	/*for (int i = 0; i < inventoryItemId.size(); ++i)
+		std::cout << inventoryItemId[i] << " " << inventoryItemQuantity[i] << std::endl;
+
+	for (int i = 0; i < droppedItemId.size(); ++i)
+		std::cout << droppedItemId[i] << " " << droppedItemXPos[i] << " " << droppedItemYPos[i] << " " << droppedItemQuantity[i] << std::endl;*/
+
 	mSaveSystem.save(mCharacter.getPosition(), npcPositions, npcWaypoints, mCrystals,
 		year, day, hour, minute, bankBalance, hasBorrowActive, penalty, interest, amountToRepay,
-		repayDay);
+		repayDay, inventoryItemId, inventoryItemQuantity, droppedItemId, droppedItemXPos, droppedItemYPos,
+		droppedItemQuantity);
 }
 
 void RPGEngine::loadGame() {
@@ -444,10 +540,17 @@ void RPGEngine::loadGame() {
 	std::vector<int> npcWaypoints;
 	int crystals, year, day, hour, minute, bankBalance, penalty, interest, amountToRepay,
 		repayDay, hasBorrowActive;
+	std::vector<int> droppedItemId;
+	std::vector<float> droppedItemXPos;
+	std::vector<float> droppedItemYPos;
+	std::vector<int> droppedItemQuantity;
+	std::vector<int> inventoryItemId;
+	std::vector<int> inventoryItemQuantity;
 
 	if (mSaveSystem.load(playerPosition, npcPositions, npcWaypoints, crystals,
 		year, day, hour, minute, bankBalance, hasBorrowActive, penalty, interest, 
-		amountToRepay, repayDay)) {
+		amountToRepay, repayDay, inventoryItemId, inventoryItemQuantity, droppedItemId, 
+		droppedItemXPos, droppedItemYPos, droppedItemQuantity)) {
 		mCharacter.setPosition(playerPosition);
 
 		mNPCManager.loadNPCStates(npcPositions, npcWaypoints);
@@ -467,6 +570,52 @@ void RPGEngine::loadGame() {
 			
 		mBankMenu.setBankBalance(bankBalance);
 		mBankMenu.setBorrowStats(borrowActive, penalty, interest, amountToRepay, repayDay);
+
+		for (size_t i = 0; i < droppedItemId.size(); ++i)
+		{
+			const Item* item = nullptr;
+
+			if (droppedItemId[i] == 1)
+				item = new Wood();
+			else if (droppedItemId[i] == 2)
+				item = new TowerBlueprint();
+			
+			if (item != nullptr)
+			{
+				DroppedItem droppedItem(item, sf::Vector2f(droppedItemXPos[i], droppedItemYPos[i]), droppedItemQuantity[i]);
+				mDroppedItems.push_back(droppedItem);
+			}
+			else
+				std::cout << "Error : unknown drop item!" << std::endl;
+		}
+
+		for (size_t i = 0; i < inventoryItemId.size(); ++i)
+		{
+			if (inventoryItemId[i] == 1)
+			{
+				std::unique_ptr<Wood> woodItem = std::make_unique<Wood>();
+				mInventory.addItem(std::move(woodItem), inventoryItemQuantity[i]);
+			}
+			else if (inventoryItemId[i] == 2)
+			{
+				std::unique_ptr<TowerBlueprint> towerBlueprint = std::make_unique<TowerBlueprint>();
+				mInventory.addItem(std::move(towerBlueprint), inventoryItemQuantity[i]);
+			}
+		}
+		
+		for (int i = 0; i < mInventory.getSlotCount(); ++i)
+		{
+			if (mInventory.getItemAt(i))
+			{
+				std::cout << mInventory.getItemAt(i)->getType() << " " << mInventory.getItemQuantityAt(i) << std::endl;
+			}
+		}
+
+		for (auto& droppedItem : mDroppedItems)
+		{
+			std::cout << droppedItem.getItem()->getType() << " " << droppedItem.getPosition().x << " "
+				<< droppedItem.getPosition().y << " " << droppedItem.getQuantity() << std::endl;
+		}
 	}
 	else {
 		std::cerr << "Failed to load game data." << std::endl;
@@ -497,4 +646,7 @@ void RPGEngine::resetSaveGame() {
 
 	mBankMenu.setBankBalance(0);
 	mBankMenu.resetBorrowStats();
+
+
+	mDroppedItems.erase(mDroppedItems.begin(), mDroppedItems.end());
 }

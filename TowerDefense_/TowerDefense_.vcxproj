@@ -140,6 +140,10 @@
     <ClCompile Include="Rpg\gamengine\RPGEngine.cpp" />
     <ClCompile Include="Rpg\inventory\Inventory.cpp" />
     <ClCompile Include="Rpg\inventory\InventoryMenu.cpp" />
+    <ClCompile Include="Rpg\inventory\items\DroppedItem.cpp" />
+    <ClCompile Include="Rpg\inventory\items\Item.cpp" />
+    <ClCompile Include="Rpg\inventory\items\TowerBlueprint.cpp" />
+    <ClCompile Include="Rpg\inventory\items\Wood.cpp" />
     <ClCompile Include="Rpg\mainCharacter\MainCharacter.cpp" />
     <ClCompile Include="Rpg\map\buildings\Building.cpp" />
     <ClCompile Include="Rpg\map\GameMap.cpp" />
@@ -193,6 +197,10 @@
     <ClInclude Include="Rpg\gamengine\RPGEngine.h" />
     <ClInclude Include="Rpg\inventory\Inventory.h" />
     <ClInclude Include="Rpg\inventory\InventoryMenu.h" />
+    <ClInclude Include="Rpg\inventory\items\DroppedItem.h" />
+    <ClInclude Include="Rpg\inventory\items\Item.h" />
+    <ClInclude Include="Rpg\inventory\items\TowerBlueprint.h" />
+    <ClInclude Include="Rpg\inventory\items\Wood.h" />
     <ClInclude Include="Rpg\mainCharacter\MainCharacter.h" />
     <ClInclude Include="Rpg\map\buildings\Building.h" />
     <ClInclude Include="Rpg\map\GameMap.h" />
@@ -237,9 +245,6 @@
     <ClInclude Include="TowerDefense\waves\Map.h" />
     <ClInclude Include="TowerDefense\waves\PathsConfig.h" />
     <ClInclude Include="TowerDefense\waves\Wave.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="savegame.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,6 +15,9 @@
 #include "../npcs/SeraphinaLumeris.h"
 #include "../../TimeSystem.h"
 #include "../menues/BankMenu.h"
+#include "../inventory/items/Wood.h"
+#include "../inventory/items/TowerBlueprint.h"
+#include "../inventory/items/DroppedItem.h"
 
 class GameManager;
 
@@ -74,5 +77,8 @@ private:
 
 	NPC* mCurrentInteractingNPC;
 	TimeSystem mTimeSystem;
+
+	int mStorageCapacity;
+	std::vector<DroppedItem> mDroppedItems;
 };
 

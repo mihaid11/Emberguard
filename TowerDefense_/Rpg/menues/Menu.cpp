@@ -1,8 +1,10 @@
 #include "Menu.h"
 #include <iostream>
+#include "../gamengine/RPGEngine.h"
 
-Menu::Menu(sf::RenderWindow& window, SkillTree& skillTree, Inventory& inventory) 
-	: mCurrentMenu("None"),
+Menu::Menu(sf::RenderWindow& window, SkillTree& skillTree, Inventory& inventory,
+	const sf::Vector2f& playerPos, std::vector<DroppedItem>& droppedItems, RPGEngine& rpgEngine)
+	: mCurrentMenu("Inventory"),
 inventoryButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "Inventory"),
 skillTreeButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "SkillTree"),
 exitButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "Exit")
@@ -17,7 +19,7 @@ exitButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "Exit")
 	mSkillTreeMenu = std::make_unique<SkillTreeMenu>(sf::Vector2f(mMenuShape.getPosition().x + 10.0f, mMenuShape.getPosition().y + 100.0f),
 		sf::Vector2f(mMenuShape.getSize().x - 20.0f, mMenuShape.getSize().y - 110.0f), skillTree);
 	mInventoryMenu = std::make_unique<InventoryMenu>(inventory, sf::Vector2f(mMenuShape.getPosition().x + mMenuShape.getSize().x / 2, mMenuShape.getPosition().y + mMenuShape.getSize().y / 3),
-		sf::Vector2f(70.0f, 70.0f));
+		sf::Vector2f(70.0f, 70.0f), playerPos, droppedItems);
 
 	mHoveredZoneShape.setSize(sf::Vector2f(window.getSize().x * 3.0f / 4.0f, 58));
 	mHoveredZoneShape.setFillColor(sf::Color(10, 10, 10, 100));
@@ -43,6 +45,7 @@ exitButton(sf::Vector2f(0, 0), sf::Vector2f(80.0f, 35.0f), "Exit")
 		});
 
 	exitButton.setCallback([&]() {
+		rpgEngine.saveGame();
 		window.close();
 		});
 
@@ -97,12 +100,27 @@ void Menu::switchToMenu(const std::string& menuName)
 	std::cout << "Switched to " << menuName << " menu." << std::endl;
 }
 
+void Menu::restart()
+{
+	mInventoryMenu->restart();
+}
+
 void Menu::update(int crystals, const Inventory& inventory, const SkillTree& skillTree)
 {
 	mCrystalText.setString("Crystals " + std::to_string(crystals));
 
 	mInventoryMenu->update(inventory);
 	mSkillTreeMenu->update(skillTree);
+}
+
+const std::string& Menu::getMenuType() const
+{
+	return mCurrentMenu;
+}
+
+InventoryMenu& Menu::getInventoryMenu()
+{
+	return *mInventoryMenu;
 }
 
 void Menu::render(sf::RenderWindow& window)

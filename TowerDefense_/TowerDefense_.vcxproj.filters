@@ -49,47 +49,50 @@
     <Filter Include="TowerDefense\Tower\Types">
       <UniqueIdentifier>{131ce004-ebe2-49d3-804b-11e2bc974773}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rpg">
-      <UniqueIdentifier>{b1d98614-b558-46ae-b80b-352ef70db392}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameManager">
       <UniqueIdentifier>{337c2a15-1ef5-4a55-a019-9ecd204ffbb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rpg\GameEngine">
-      <UniqueIdentifier>{75af9d15-7101-4bf3-b041-7d2eb58d98f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\GameMap">
-      <UniqueIdentifier>{e22ca3fa-afda-43ae-b685-9e7e89712b3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\GameMap\Buildings">
-      <UniqueIdentifier>{a058777c-581f-4e59-823a-1c0355e5e5f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\MainCharacter">
-      <UniqueIdentifier>{1a9185c0-d260-49b8-b403-eea54df19fd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\NPCs">
-      <UniqueIdentifier>{99cbbb40-a65d-4d90-8868-9179b4a43313}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\NPCs\NPCManager">
-      <UniqueIdentifier>{d987f222-df9e-472d-96d1-a1edd8ad3efc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\DialogueSystem">
-      <UniqueIdentifier>{70aa0a91-5536-4e73-b880-7c64b81bbcfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\Menues">
-      <UniqueIdentifier>{8f5353c0-9499-453f-b0e4-bfd5caffe042}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\SkillTree">
-      <UniqueIdentifier>{09972ea6-7696-4d2a-a9af-adfa884b74ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\SaveSystem">
-      <UniqueIdentifier>{8e55af62-f387-4453-97ed-53f06dfac55c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rpg\Inventory">
-      <UniqueIdentifier>{6f62b6e8-2e54-4a70-b4d2-5663b77d3924}</UniqueIdentifier>
-    </Filter>
     <Filter Include="TimeSystem">
       <UniqueIdentifier>{5e42b73a-bb44-4903-8c3e-5551b51e4dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg">
+      <UniqueIdentifier>{b1d98614-b558-46ae-b80b-352ef70db392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\GameEngine">
+      <UniqueIdentifier>{75af9d15-7101-4bf3-b041-7d2eb58d98f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\GameMap">
+      <UniqueIdentifier>{e22ca3fa-afda-43ae-b685-9e7e89712b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\GameMap\Buildings">
+      <UniqueIdentifier>{a058777c-581f-4e59-823a-1c0355e5e5f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\MainCharacter">
+      <UniqueIdentifier>{1a9185c0-d260-49b8-b403-eea54df19fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\NPCs">
+      <UniqueIdentifier>{99cbbb40-a65d-4d90-8868-9179b4a43313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\NPCs\NPCManager">
+      <UniqueIdentifier>{d987f222-df9e-472d-96d1-a1edd8ad3efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\DialogueSystem">
+      <UniqueIdentifier>{70aa0a91-5536-4e73-b880-7c64b81bbcfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\Menues">
+      <UniqueIdentifier>{8f5353c0-9499-453f-b0e4-bfd5caffe042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\SkillTree">
+      <UniqueIdentifier>{09972ea6-7696-4d2a-a9af-adfa884b74ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\SaveSystem">
+      <UniqueIdentifier>{8e55af62-f387-4453-97ed-53f06dfac55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\Inventory">
+      <UniqueIdentifier>{6f62b6e8-2e54-4a70-b4d2-5663b77d3924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Rpg\Inventory\items">
+      <UniqueIdentifier>{510d529d-8468-4476-b4ce-ccabd98ba3c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,85 +169,97 @@
       <Filter>GameManager</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\gamengine\RPGEngine.cpp">
-      <Filter>Rpg\GameEngine</Filter>
+      <Filter>Resource Files\Rpg\GameEngine</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\map\GameMap.cpp">
-      <Filter>Rpg\GameMap</Filter>
+      <Filter>Resource Files\Rpg\GameMap</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\map\buildings\Building.cpp">
-      <Filter>Rpg\GameMap\Buildings</Filter>
+      <Filter>Resource Files\Rpg\GameMap\Buildings</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\mainCharacter\MainCharacter.cpp">
-      <Filter>Rpg\MainCharacter</Filter>
+      <Filter>Resource Files\Rpg\MainCharacter</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\NPC.cpp">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\NPCManager.cpp">
-      <Filter>Rpg\NPCs\NPCManager</Filter>
+      <Filter>Resource Files\Rpg\NPCs\NPCManager</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\dialogueSystem\DialogueSegment.cpp">
-      <Filter>Rpg\DialogueSystem</Filter>
+      <Filter>Resource Files\Rpg\DialogueSystem</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\dialogueSystem\Dialogue.cpp">
-      <Filter>Rpg\DialogueSystem</Filter>
+      <Filter>Resource Files\Rpg\DialogueSystem</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\menues\Menu.cpp">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\skillTree\SkillTreeMenu.cpp">
-      <Filter>Rpg\SkillTree</Filter>
+      <Filter>Resource Files\Rpg\SkillTree</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\skillTree\SkillTree.cpp">
-      <Filter>Rpg\SkillTree</Filter>
+      <Filter>Resource Files\Rpg\SkillTree</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\skillTree\SkillNode.cpp">
-      <Filter>Rpg\SkillTree</Filter>
+      <Filter>Resource Files\Rpg\SkillTree</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\saveSystem\SaveSystem.cpp">
-      <Filter>Rpg\SaveSystem</Filter>
+      <Filter>Resource Files\Rpg\SaveSystem</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\menues\StartTowerDefenseMenu.cpp">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\VincentHale.cpp">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\SeraphinaLumeris.cpp">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\MiraStanton.cpp">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\ElliotMarlowe.cpp">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\npcs\GarrickStone.cpp">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\dialogueSystem\DialogueManager.cpp">
-      <Filter>Rpg\DialogueSystem</Filter>
+      <Filter>Resource Files\Rpg\DialogueSystem</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\inventory\Inventory.cpp">
-      <Filter>Rpg\Inventory</Filter>
+      <Filter>Resource Files\Rpg\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\inventory\InventoryMenu.cpp">
-      <Filter>Rpg\Inventory</Filter>
+      <Filter>Resource Files\Rpg\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="TimeSystem.cpp">
       <Filter>TimeSystem</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\menues\BankMenu.cpp">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\menues\WithdrawMenu.cpp">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\menues\DepositMenu.cpp">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClCompile>
     <ClCompile Include="Rpg\menues\BorrowMenu.cpp">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\inventory\items\Item.cpp">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\inventory\items\Wood.cpp">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\inventory\items\DroppedItem.cpp">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClCompile>
+    <ClCompile Include="Rpg\inventory\items\TowerBlueprint.cpp">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -321,90 +336,97 @@
       <Filter>GameManager</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\gamengine\RPGEngine.h">
-      <Filter>Rpg\GameEngine</Filter>
+      <Filter>Resource Files\Rpg\GameEngine</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\map\GameMap.h">
-      <Filter>Rpg\GameMap</Filter>
+      <Filter>Resource Files\Rpg\GameMap</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\map\buildings\Building.h">
-      <Filter>Rpg\GameMap\Buildings</Filter>
+      <Filter>Resource Files\Rpg\GameMap\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\mainCharacter\MainCharacter.h">
-      <Filter>Rpg\MainCharacter</Filter>
+      <Filter>Resource Files\Rpg\MainCharacter</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\NPC.h">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\NPCManager.h">
-      <Filter>Rpg\NPCs\NPCManager</Filter>
+      <Filter>Resource Files\Rpg\NPCs\NPCManager</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\dialogueSystem\DialogueSegment.h">
-      <Filter>Rpg\DialogueSystem</Filter>
+      <Filter>Resource Files\Rpg\DialogueSystem</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\dialogueSystem\Dialogue.h">
-      <Filter>Rpg\DialogueSystem</Filter>
+      <Filter>Resource Files\Rpg\DialogueSystem</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\menues\Menu.h">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\skillTree\SkillNode.h">
-      <Filter>Rpg\SkillTree</Filter>
+      <Filter>Resource Files\Rpg\SkillTree</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\skillTree\SkillTree.h">
-      <Filter>Rpg\SkillTree</Filter>
+      <Filter>Resource Files\Rpg\SkillTree</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\skillTree\SkillTreeMenu.h">
-      <Filter>Rpg\SkillTree</Filter>
+      <Filter>Resource Files\Rpg\SkillTree</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\saveSystem\SaveSystem.h">
-      <Filter>Rpg\SaveSystem</Filter>
+      <Filter>Resource Files\Rpg\SaveSystem</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\menues\StartTowerDefenseMenu.h">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\VincentHale.h">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\SeraphinaLumeris.h">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\MiraStanton.h">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\GarrickStone.h">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\npcs\ElliotMarlowe.h">
-      <Filter>Rpg\NPCs</Filter>
+      <Filter>Resource Files\Rpg\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\dialogueSystem\DialogueManager.h">
-      <Filter>Rpg\DialogueSystem</Filter>
+      <Filter>Resource Files\Rpg\DialogueSystem</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\inventory\Inventory.h">
-      <Filter>Rpg\Inventory</Filter>
+      <Filter>Resource Files\Rpg\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\inventory\InventoryMenu.h">
-      <Filter>Rpg\Inventory</Filter>
+      <Filter>Resource Files\Rpg\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="TimeSystem.h">
       <Filter>TimeSystem</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\menues\BankMenu.h">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\menues\WithdrawMenu.h">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\menues\DepositMenu.h">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClInclude>
     <ClInclude Include="Rpg\menues\BorrowMenu.h">
-      <Filter>Rpg\Menues</Filter>
+      <Filter>Resource Files\Rpg\Menues</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="savegame.txt">
-      <Filter>Rpg\SaveSystem</Filter>
-    </Text>
+    <ClInclude Include="Rpg\inventory\items\Item.h">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg\inventory\items\Wood.h">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg\inventory\items\DroppedItem.h">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClInclude>
+    <ClInclude Include="Rpg\inventory\items\TowerBlueprint.h">
+      <Filter>Resource Files\Rpg\Inventory\items</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ public:
 
 	void setPosition(const sf::Vector2f& position);
 	sf::Vector2f getPosition() const;
+	const sf::Vector2f& getActualPosition() const;
 	sf::FloatRect getBounds() const;
 
 private:

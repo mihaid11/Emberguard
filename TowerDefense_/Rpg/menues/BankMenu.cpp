@@ -1,9 +1,9 @@
 #include "BankMenu.h"
 #include <iostream>
 
-BankMenu::BankMenu(sf::RenderWindow& window, int& crystals, int storageCapacity,
+BankMenu::BankMenu(sf::RenderWindow& window, int& crystals, int& storageCapacity,
         TimeSystem& timeSystem)
-    : mCrystals(crystals), mStorageCapacity(storageCapacity), mBankBalance(0), mHasBorrowActive(false),
+    : mCrystals(crystals), mBankBalance(0), mHasBorrowActive(false),
     mWithdrawButton(sf::Vector2f(1000.0f, 575.0f), sf::Vector2f(155.0f, 72.0f), "Withdraw"),
     mDepositButton(sf::Vector2f(1000.0f, 575.0f), sf::Vector2f(155.f, 72.0f), "Deposit"),
     mBorrowButton(sf::Vector2f(1000.0f, 575.0f), sf::Vector2f(155.f, 72.0f), "Borrow"),
@@ -57,11 +57,11 @@ BankMenu::BankMenu(sf::RenderWindow& window, int& crystals, int storageCapacity,
 
     mWithdrawMenu = std::make_unique<WithdrawMenu>(window, sf::Vector2f(mMenuShape.getPosition().x 
         + buttonSize.x + 125, mMenuShape.getPosition().y + 87.5), sf::Vector2f(mMenuShape.getSize().x / 1.5,
-           mMenuShape.getSize().y - 150), crystals, mBankBalance);
+           mMenuShape.getSize().y - 150), crystals, mBankBalance, storageCapacity);
 
     mDepositMenu = std::make_unique<DepositMenu>(window, sf::Vector2f(mMenuShape.getPosition().x
         + buttonSize.x + 125, mMenuShape.getPosition().y + 87.5), sf::Vector2f(mMenuShape.getSize().x / 1.5,
-            mMenuShape.getSize().y - 150), crystals, mBankBalance, mStorageCapacity);
+            mMenuShape.getSize().y - 150), crystals, mBankBalance, storageCapacity);
 
     mBorrowMenu = std::make_unique<BorrowMenu>(window, sf::Vector2f(mMenuShape.getPosition().x
         + buttonSize.x + 125, mMenuShape.getPosition().y + 87.5), sf::Vector2f(mMenuShape.getSize().x / 1.5,
@@ -164,6 +164,13 @@ int BankMenu::getRepaymentDay()
 bool BankMenu::hasActiveBorrow()
 {
     return mBorrowMenu->getActiveBorrow();
+}
+
+void BankMenu::restart()
+{
+    mWithdrawMenu->restart();
+    mDepositMenu->restart();
+    mBorrowMenu->restart();
 }
 
 int BankMenu::getLoanAmount()

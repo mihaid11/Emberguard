@@ -22,6 +22,7 @@ public:
 
 	bool getActiveBorrow();
 
+	void restart();
 	void reset();
 	void setStats(bool hasBorrowActive, int penalty, int interest, int amountToRepay, int repayDay);
 
